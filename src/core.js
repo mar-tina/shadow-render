@@ -5,9 +5,6 @@ export let Shadow;
     let BaseElement = (function() {
       function BaseElement() {}
       BaseElement.prototype.clone = function(state) {
-        this.email = "tina@gmail.com";
-        this.noemala = "tina@gmail.com";
-        let noname = "Martina";
 
         let clone = class extends HTMLElement {
           constructor() {
