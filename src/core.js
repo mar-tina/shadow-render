@@ -1,26 +1,28 @@
+export const html = (strings, ...args) => ({
+  doc: strings.reduce(
+    (acc, currElement, index) => acc + currElement + (args[index] || ""),
+    ""
+  )
+});
+
 export let Shadow;
 
 (function(Shadow) {
   (function(Base) {
     let BaseElement = (function() {
       function BaseElement() {}
-      BaseElement.prototype.clone = function(state) {
-
+      BaseElement.prototype.clone = function(args) {
         let clone = class extends HTMLElement {
           constructor() {
             super();
-            this.state = state;
+            this.state = args.state;
 
             const renderTemplate = document.createElement("template");
             this._shadowRoot = this.attachShadow({
               mode: "open"
             });
 
-            let newTemplate = html`
-              <div>Something is here ${this.state.name}</div>
-            `;
-
-            renderTemplate.innerHTML = newTemplate.doc;
+            renderTemplate.innerHTML = args.template(this.state).doc;
             this._shadowRoot.appendChild(
               renderTemplate.content.cloneNode(true)
             );
@@ -28,10 +30,12 @@ export let Shadow;
             return this;
           }
         };
-        for (var attr in this) {
-          console.log("the attr", attr);
-          clone[attr] = this[attr];
-        }
+
+        // for (var attr in this) {
+        //   console.log("the attr", attr);
+        //   clone[attr] = this[attr];
+        // }
+
         return clone;
       };
       return BaseElement;
@@ -40,10 +44,25 @@ export let Shadow;
   })(Shadow.Base || (Shadow.Base = {}));
 })(Shadow || (Shadow = {}));
 
-console.log("The unl", Shadow.Base.BaseElement.prototype.clone);
+/**
+ * Initializes the application .
+ * @param {string} selector
+ * @param {html-template} component
+ * @returns {void}
+ */
+export let init = function(selector, component) {
+  let el = document.querySelector(selector);
+  el.attachShadow({
+    mode: "open"
+  });
 
-export let ShadowElement = args => {
-  let newClass = new Unf.Base.BaseElement.prototype.clone(args);
-
-  customElements.define("class-one", newClass);
+  el.shadowRoot.innerHTML = component.doc;
 };
+
+export let createShadowElement = args => {
+  let newClass = new Shadow.Base.BaseElement.prototype.clone(args);
+
+  return newClass;
+};
+
+
