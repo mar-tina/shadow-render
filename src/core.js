@@ -56,8 +56,6 @@ export let Shadow;
             this.state = args.state;
             this.methods = args.methods;
 
-            // registerEvents(this, this.methods);
-
             const renderTemplate = document.createElement("template");
             const tempDiv = document.createElement("div");
 
@@ -102,11 +100,6 @@ export let Shadow;
                     allattributes.get("default")
                   );
                 }
-
-                console.log(
-                  "current default action",
-                  defaultAction.get(`${allattributes.get("id")}`)
-                );
 
                 for (let [key, value] of allattributes.entries()) {
                   if (key.startsWith("@")) {

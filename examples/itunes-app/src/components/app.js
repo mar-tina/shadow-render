@@ -31,7 +31,8 @@ let Myapp = createShadowElement({
 
   lifecycle: {
     onMount: ctx => {
-      console.log("mounted", ctx);
+      console.log("mounted", ctx.state);
+      ctx.state.name = "I am now mounted";
     }
   },
 
