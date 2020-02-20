@@ -43,7 +43,7 @@ let Myapp = createShadowElement({
   lifecycle: {
     onMount: ctx => {
       console.log("mounted", ctx.state);
-      ctx.state.name = "I am now mounted";
+      // ctx.state.name = "I am now mounted";
     }
   },
 
@@ -53,7 +53,6 @@ let Myapp = createShadowElement({
       <div @onclick="handleClick" default=${false} id="main-app">Inside main app ${
       state.name
     }</div>
-        <p @bind="todo-input" id="todo-bind"> </p>
         <input @oninput="handleInput" id="todo-input"/> 
 
         <button @onclick="handleBtnClick" id="state-change"> SEE STATE CHANGE </button>

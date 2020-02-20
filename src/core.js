@@ -62,7 +62,7 @@ export let Shadow;
               mode: "open"
             });
 
-            this._render(this);
+            this._render();
           }
 
           setState(props) {
@@ -74,22 +74,55 @@ export let Shadow;
             // Solution inspired by https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
             //clearing all the nodes in the shadow root
             var i = 0;
-            for (; i < this._shadowRoot.childNodes.length - 1; ) {
-              i = +1;
+            for (; i < this._shadowRoot.childNodes.length; ) {
               this._shadowRoot.removeChild(this.shadowRoot.childNodes[i]);
+              i = +1;
             }
 
-            this._render(this);
+            this._render();
           }
 
-          _render(ctx) {
-            let newTemplate = args.template(ctx.state);
+          clean(node) {
+            console.log("This is the node", node.childNodes);
+
+            var i = 0;
+
+            for (; i < node.childNodes.length; ) {
+              if (
+                node.childNodes[i].nodeType === 8 ||
+                node.childNodes[i].nodeType === 3
+              ) {
+                node.removeChild(node.childNodes[i]);
+              } else if (child.nodeType === 1) {
+                this.clean(node.childNodes[i]);
+              }
+              i += 1;
+            }
+
+            return node;
+          }
+
+          _render() {
+            let newTemplate = args.template(this.state);
             let tempDiv = document.createElement("div");
 
+            //append fragment to div
             tempDiv.appendChild(newTemplate);
-            ctx.renderTemplate.innerHTML = tempDiv.innerHTML;
-            ctx._shadowRoot.appendChild(
-              ctx.renderTemplate.content.cloneNode(true)
+
+            //set inner html for render template
+            this.renderTemplate.innerHTML = tempDiv.innerHTML;
+
+            tempDiv.innerHTML = "";
+            //pass to clean function
+            let cloned = this.clean(
+              this.renderTemplate.content.cloneNode(true)
+            );
+
+            tempDiv.appendChild(cloned);
+
+            this._shadowRoot.appendChild(
+              // this.renderTemplate.content.cloneNode(true)
+              tempDiv.cloneNode(true)
             );
 
             this._handleAttributes(tempDiv);
