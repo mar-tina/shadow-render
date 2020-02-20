@@ -28,7 +28,10 @@ The init function binds the application to the index.html using the div id '#app
 ```
 
 #### Creating a new element
-Create a new shadow element and add it to the shadow DOM by calling ``` customElements.define ```
+Create a new shadow element and add it to the shadow DOM by calling ``` customElements.define ```.
+
+**IMPORTANT** ALL the elements with an event listener must have an id attribute 
+
 ``` 
    import { html, createShadowElement } from "../../../../src/core.js";
    
@@ -51,10 +54,14 @@ Create a new shadow element and add it to the shadow DOM by calling ``` customEl
    customElements.define("my-app", MyApp)
   
 ```
-#### Adding event handlers 
-The event handlers are passed in the event object and "context" consecutively [using this label loosely] to 
-context meaning the execution context of the component that provides access to the state 
-object in the component.  
+#### Adding event handlers. 
+##### Syntax. 
+Prepend the event to bind to with an '@'.  
+
+``` <button @onclick="methodToCall"> Click me </button> ```
+
+The event handlers are passed in the event object and "context" consecutively  context [using this label loosely] 
+meaning the execution context of the component that provides access to the state object in the component.  
 
 The available events that can be bound to the HTML elements are the ones available in the native browser.
 [only tested on chrome].
@@ -110,7 +117,7 @@ Can only be called inside the provided objects ['methods', 'onmount'] . Future i
           <div @onclick="handleClick" default=${false} id="main-app">
             Inside main app ${state.name}</div>
             
-          <button @onclick="handleBtnClick"> State Change </button>
+          <button @onclick="handleBtnClick" id="state-change"> State Change </button>
         `)
       }
    })
