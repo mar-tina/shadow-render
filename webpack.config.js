@@ -13,7 +13,11 @@ module.exports = {
       {
         test: /\.(js)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"]
+        use: ["babel-loader"],
+        query: {
+          presets: ["es2016", "stage-2"],
+          plugins: ["@babel/plugin-proposal-decorators", { legacy: true }]
+        }
       }
     ]
   },
