@@ -1,9 +1,6 @@
-export const html = (strings, ...args) => ({
-  doc: strings.reduce(
-    (acc, currElement, index) => acc + currElement + (args[index] || ""),
-    ""
-  )
-});
+// Solution from https://stackoverflow.com/questions/10585029/parse-an-html-string-with-js
+const parseRange = document.createRange();
+export const html = Range.prototype.createContextualFragment.bind(parseRange);
 
 /**
  * Initializes the application .
@@ -17,7 +14,17 @@ export let init = function(selector, component) {
     mode: "open"
   });
 
-  el.shadowRoot.innerHTML = component.doc;
+  el.shadowRoot.appendChild(component);
+};
+
+let addListener = (type, elem, f, args) => {
+  elem[`${type}`] = e => {
+    if (args.defaultAction === "true") {
+      e.preventDefault();
+    }
+    console.log(e.defaultPrevented);
+    f(e, args.ctx);
+  };
 };
 
 /**
@@ -49,27 +56,74 @@ export let Shadow;
             this.state = args.state;
             this.methods = args.methods;
 
+            // registerEvents(this, this.methods);
+
             const renderTemplate = document.createElement("template");
+            const tempDiv = document.createElement("div");
+
             this._shadowRoot = this.attachShadow({
               mode: "open"
             });
+            let newTemplate = args.template(this.state);
 
-            renderTemplate.innerHTML = args.template(
-              this.state,
-              this.methods
-            ).doc;
+            tempDiv.appendChild(newTemplate);
+            renderTemplate.innerHTML = tempDiv.innerHTML;
             this._shadowRoot.appendChild(
               renderTemplate.content.cloneNode(true)
             );
 
+            this._handleAttributes(tempDiv);
+
             return this;
           }
-        };
+          _handleAttributes(newTemplate) {
+            for (var i = 0; i < newTemplate.childNodes.length - 1; i++) {
+              if (newTemplate.childNodes[i].attributes !== undefined) {
+                let attrArray = Array.from(
+                  newTemplate.childNodes[i].attributes
+                );
 
-        // for (var attr in this) {
-        //   clone[attr] = this[attr];
-        //   console.log("the attr", attr);
-        // }
+                var allattributes = new Map();
+                attrArray.reduce((attrs, attr) => {
+                  attrs !== "" && (attrs += " ");
+
+                  allattributes.set(`${attr.nodeName}`, `${attr.nodeValue}`);
+                }, "");
+
+                let component = this._shadowRoot.getElementById(
+                  allattributes.get("id")
+                );
+
+                //Default action handles the preventdefault action for event handlers
+                let defaultAction = new Map();
+                if (allattributes.get("default") !== undefined) {
+                  defaultAction.set(
+                    `${allattributes.get("id")}`,
+                    allattributes.get("default")
+                  );
+                }
+
+                console.log(
+                  "current default action",
+                  defaultAction.get(`${allattributes.get("id")}`)
+                );
+
+                for (let [key, value] of allattributes.entries()) {
+                  if (key.startsWith("@")) {
+                    key = key.substr(1);
+                  }
+
+                  addListener(`${key}`, component, this.methods[`${value}`], {
+                    defaultAction: defaultAction.get(
+                      `${allattributes.get("id")}`
+                    ),
+                    ctx: this
+                  });
+                }
+              }
+            }
+          }
+        };
 
         return clone;
       };
