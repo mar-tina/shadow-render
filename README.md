@@ -28,6 +28,7 @@ The init function binds the application to the index.html using the div id '#app
 ```
 
 #### Creating a new element
+Create a new shadow element and add it to the shadow DOM by calling ``` customElements.define ```
 ``` 
    import { html, createShadowElement } from "../../../../src/core.js";
    
@@ -84,6 +85,38 @@ The `default` attribute indicates whether to run ``` e.preventDefault() ``` .
    customElements.define("my-app", MyApp)
   
 ```
+#### SetState
+SetState updates the state and re-renders the component. The current implementation performs poorly as more
+elements are added to the screen and depending on how fast the elements are being rendered the performance 
+degrades.
+
+Can only be called inside the provided objects ['methods', 'onmount'] . Future implementation for ['actions']
+
+```
+   import { html, createShadowElement } from "../../../../src/core.js";
+   
+   let MyApp = createShadowElement({
+        methods: {
+         ...
+         handleBtnClick: (e, ctx) => {
+          ctx.setState({
+            todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
+          });
+        }
+       }
+       
+       template: state => {
+        html(`
+          <div @onclick="handleClick" default=${false} id="main-app">
+            Inside main app ${state.name}</div>
+            
+          <button @onclick="handleBtnClick"> State Change </button>
+        `)
+      }
+   })
+   
+   ...
+```
 
 You now have a basic app structure setup :tada:
 
@@ -95,13 +128,13 @@ You now have a basic app structure setup :tada:
 
 - [:white_check_mark:] Creating new elements.
 
-- [:hourglass:] Handling state update.
+- [:white_check_mark:] Handling state update.
 
-- [:negative_squared_cross_mark:] Handling re-rendering of the component.
+- [:white_check_mark:] Handling re-rendering of the component.
 
-- [:negative_squared_cross_mark:] Handling setting element attributes
+- [:hourglass:] Handling props being passed down from the parent
 
-- [:negative_squared_cross_mark:] Handling props being passed down from the parent
+- [:hourglass:] Example App 
 
 
 ### BUGS:
