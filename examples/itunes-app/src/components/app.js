@@ -30,6 +30,13 @@ let Myapp = createShadowElement({
 
     handleInput: (e, ctx) => {
       console.log("Some input", e.target.value, ctx);
+    },
+
+    handleBtnClick: (e, ctx) => {
+      console.log("CLicking button");
+      ctx.setState({
+        todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
+      });
     }
   },
 
@@ -42,15 +49,20 @@ let Myapp = createShadowElement({
 
   template: state => {
     return html(`
-        <div @onclick="handleClick" default=${false} id="main-app">Inside main app ${
+    
+      <div @onclick="handleClick" default=${false} id="main-app">Inside main app ${
       state.name
     }</div>
+        <p @bind="todo-input" id="todo-bind"> </p>
+        <input @oninput="handleInput" id="todo-input"/> 
 
-     <input @oninput="handleInput" id="todo-input"/> 
-        
+        <button @onclick="handleBtnClick" id="state-change"> SEE STATE CHANGE </button>
+
         ${state.todos.map(
-          x => `<div @onclick="handleTodoClick" id=${x.id}> ${x.name} </div>`
+          x =>
+            `<div  @onclick="handleTodoClick" id=${x.id} placeholder="TODO"> ${x.name} </div>`
         )}
+  
     `);
   }
 });
