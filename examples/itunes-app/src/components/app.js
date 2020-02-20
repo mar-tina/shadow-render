@@ -26,12 +26,17 @@ let Myapp = createShadowElement({
 
     handleTodoClick: e => {
       console.log("CLICKING TODO", e);
+    },
+
+    handleInput: (e, ctx) => {
+      console.log("Some input", e.target.value, ctx);
     }
   },
 
   lifecycle: {
     onMount: ctx => {
-      console.log("mounted", ctx);
+      console.log("mounted", ctx.state);
+      ctx.state.name = "I am now mounted";
     }
   },
 
@@ -40,6 +45,8 @@ let Myapp = createShadowElement({
         <div @onclick="handleClick" default=${false} id="main-app">Inside main app ${
       state.name
     }</div>
+
+     <input @oninput="handleInput" id="todo-input"/> 
         
         ${state.todos.map(
           x => `<div @onclick="handleTodoClick" id=${x.id}> ${x.name} </div>`

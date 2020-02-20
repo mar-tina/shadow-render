@@ -40,6 +40,19 @@ let bindCycle = (elem, f) => {
   }
 };
 
+/**
+ * Passes the 'this' object to all the executing functions when node is mounted or unmounted
+ * @param {THIS} elem - object that has reference to the current execution context
+ * @param {function} f - onmount function to be called in the connectedCallback function
+ */
+let bindState = (elem, f) => {
+  if (typeof f !== "undefined") {
+    f(elem);
+  } else {
+    console.log("Onmount function is undefined");
+  }
+};
+
 export let Shadow;
 
 (function(Shadow) {
@@ -55,8 +68,6 @@ export let Shadow;
             super();
             this.state = args.state;
             this.methods = args.methods;
-
-            // registerEvents(this, this.methods);
 
             const renderTemplate = document.createElement("template");
             const tempDiv = document.createElement("div");
@@ -76,6 +87,7 @@ export let Shadow;
 
             return this;
           }
+
           _handleAttributes(newTemplate) {
             for (var i = 0; i < newTemplate.childNodes.length - 1; i++) {
               if (newTemplate.childNodes[i].attributes !== undefined) {
@@ -84,9 +96,7 @@ export let Shadow;
                 );
 
                 var allattributes = new Map();
-                attrArray.reduce((attrs, attr) => {
-                  attrs !== "" && (attrs += " ");
-
+                attrArray.map(attr => {
                   allattributes.set(`${attr.nodeName}`, `${attr.nodeValue}`);
                 }, "");
 
@@ -102,11 +112,6 @@ export let Shadow;
                     allattributes.get("default")
                   );
                 }
-
-                console.log(
-                  "current default action",
-                  defaultAction.get(`${allattributes.get("id")}`)
-                );
 
                 for (let [key, value] of allattributes.entries()) {
                   if (key.startsWith("@")) {
