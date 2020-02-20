@@ -3,7 +3,7 @@ A functional web component library that wraps the base HTMLElement class and pro
 interface to interact with web components inspired by vueJS. Abstracts away the underlying native  
 html attributes and events providing a simpler interface.
 
-## How To:
+### HOW TO:
 
 #### Initializing the application.
 
@@ -52,9 +52,14 @@ The init function binds the application to the index.html using the div id '#app
 ```
 #### Adding event handlers 
 The event handlers are passed in the event object and "context" consecutively [using this label loosely] to 
-mean "this" - this object being the execution context of the component that provides access to the state 
-object in the component. The available events are the ones available in the native browser. [only tested on chrome].
-The default attribute indicates whether to run ``` e.preventDefault() ``` . 
+context meaning the execution context of the component that provides access to the state 
+object in the component.  
+
+The available events that can be bound to the HTML elements are the ones available in the native browser.
+[only tested on chrome].
+
+
+The `default` attribute indicates whether to run ``` e.preventDefault() ``` . 
 
 ```
    import { html, createShadowElement } from "../../../../src/core.js";
@@ -80,9 +85,28 @@ The default attribute indicates whether to run ``` e.preventDefault() ``` .
   
 ```
 
-BUGS:
+You now have a basic app structure setup :tada:
+
+### TODO: 
+
+- [:white_check_mark:] Initialize the application.
+
+- [:white_check_mark:] Handling events.
+
+- [:white_check_mark:] Creating new elements.
+
+- [:hourglass:] Handling state update.
+
+- [:negative_squared_cross_mark:] Handling re-rendering of the component.
+
+- [:negative_squared_cross_mark:] Handling setting element attributes
+
+- [:negative_squared_cross_mark:] Handling props being passed down from the parent
+
+
+### BUGS:
 
 ### '@`eventName`'
 
-- Binding events changes the other input values to undefined
+- [:bug:] Binding events changes the other attribute values to undefined || changes the value to the passed in function
 
