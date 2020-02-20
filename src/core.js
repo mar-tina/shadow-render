@@ -68,7 +68,6 @@ export let Shadow;
           setState(props) {
             for (var key in props) {
               if (props.hasOwnProperty(key)) {
-                console.log("The key", key);
                 this.state[key] = props[key];
               }
             }
@@ -77,7 +76,6 @@ export let Shadow;
             var i = 0;
             for (; i < this._shadowRoot.childNodes.length - 1; ) {
               i = +1;
-              console.log("THIS IS THE CHILD", this.shadowRoot.childNodes[i]);
               this._shadowRoot.removeChild(this.shadowRoot.childNodes[i]);
             }
 
@@ -136,6 +134,10 @@ export let Shadow;
                 }
               }
             }
+          }
+
+          disconnectedCallback() {
+            console.log("Disconnected app");
           }
         };
 
