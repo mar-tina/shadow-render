@@ -33,7 +33,6 @@ let Myapp = createShadowElement({
     },
 
     handleBtnClick: (e, ctx) => {
-      console.log("CLicking button");
       ctx.setState({
         todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
       });

@@ -83,7 +83,6 @@ export let Shadow;
           }
 
           clean(node) {
-            console.log("This is the node", node.childNodes);
 
             var i = 0;
 
@@ -108,10 +107,9 @@ export let Shadow;
 
             //append fragment to div
             tempDiv.appendChild(newTemplate);
-
             //set inner html for render template
             this.renderTemplate.innerHTML = tempDiv.innerHTML;
-
+            //empty the temp div to allow it to append the cloned element
             tempDiv.innerHTML = "";
             //pass to clean function
             let cloned = this.clean(
@@ -119,12 +117,7 @@ export let Shadow;
             );
 
             tempDiv.appendChild(cloned);
-
-            this._shadowRoot.appendChild(
-              // this.renderTemplate.content.cloneNode(true)
-              tempDiv.cloneNode(true)
-            );
-
+            this._shadowRoot.appendChild(tempDiv.cloneNode(true));
             this._handleAttributes(tempDiv);
           }
 
@@ -167,10 +160,6 @@ export let Shadow;
                 }
               }
             }
-          }
-
-          disconnectedCallback() {
-            console.log("Disconnected app");
           }
         };
 
