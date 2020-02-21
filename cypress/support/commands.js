@@ -23,3 +23,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("fakeDocument", template => {
+  let doc = document.implementation.createHTMLDocument("New Document");
+  let ndiv = doc.createElement("div");
+  ndiv.innerHTML = ` Hello world `;
+  ndiv.id = "app";
+
+  doc.body.appendChild(ndiv);
+
+  init("#app", template, doc);
+
+  return cy.chain().doc
+//   return doc;
+});
