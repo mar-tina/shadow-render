@@ -3,11 +3,18 @@ A functional web component library that wraps the base HTMLElement class and pro
 interface to interact with web components inspired by vueJS. Abstracts away the underlying native  
 html attributes and events providing a simpler interface.
 
-### HOW TO:
+##### Why
+> Solves a personal pain point . Needed a functional approach to dealing with HTMLElement class and reduce the boiler plate that 
+> involved setting up new classes each time to define a new shadowRoot. 
 
+##### Why wrap the default HTMLElement class instead of building out components independently ?
+> This can be done without needing to wrap the HTMLElement class but the default HTML class comes with some defaults like 
+> scoped state .. connectedCallback .. makes development easier.
+
+## USAGE:
 #### Initializing the application.
 
-The init function binds the application to the index.html using the div id '#app' 
+The init function binds the application to the index.html . Default setup binds with the div id '#app' 
 
 ``` 
     import { init, html } from "../../../src/core.js"; 
@@ -28,7 +35,7 @@ The init function binds the application to the index.html using the div id '#app
 ```
 
 #### Creating a new element
-Create a new shadow element and add it to the shadow DOM by calling ``` customElements.define ```.
+Create a new shadow element by importing the ```createShadowElement``` function from the lib and add a new tag id to the document by calling ```customElements.define```
 
 **IMPORTANT** ALL the elements with an event listener must have an id attribute 
 
@@ -60,7 +67,7 @@ Prepend the event to bind to with an '@'.
 
 ``` <button @onclick="methodToCall"> Click me </button> ```
 
-The event handlers are passed in the event object and "context" consecutively  context [using this label loosely] 
+The event handlers are passed in the event object and "context" consecutively [using context loosely] 
 meaning the execution context of the component that provides access to the state object in the component.  
 
 The available events that can be bound to the HTML elements are the ones available in the native browser.
