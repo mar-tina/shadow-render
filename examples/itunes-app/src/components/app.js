@@ -33,7 +33,6 @@ let Myapp = createShadowElement({
     },
 
     handleBtnClick: (e, ctx) => {
-      console.log("CLicking button");
       ctx.setState({
         todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
       });
@@ -43,24 +42,26 @@ let Myapp = createShadowElement({
   lifecycle: {
     onMount: ctx => {
       console.log("mounted", ctx.state);
-      ctx.state.name = "I am now mounted";
+      // ctx.state.name = "I am now mounted";
+      ctx.setState({
+        name: "I am now mounted"
+      });
     }
   },
 
   template: state => {
     return html(`
     
-      <div @onclick="handleClick" default=${false} id="main-app">Inside main app ${
+      <div id="main-app" @onclick="handleClick" default=${false} >Inside main app ${
       state.name
     }</div>
-        <p @bind="todo-input" id="todo-bind"> </p>
-        <input @oninput="handleInput" id="todo-input"/> 
+        <input id="todo-input" @oninput="handleInput" /> 
 
-        <button @onclick="handleBtnClick" id="state-change"> SEE STATE CHANGE </button>
+        <button id="state-change" @onclick="handleBtnClick" > SEE STATE CHANGE </button>
 
         ${state.todos.map(
           x =>
-            `<div  @onclick="handleTodoClick" id=${x.id} placeholder="TODO"> ${x.name} </div>`
+            `<div id=${x.id} @onclick="handleTodoClick"  placeholder="TODO"> ${x.name} </div>`
         )}
   
     `);
