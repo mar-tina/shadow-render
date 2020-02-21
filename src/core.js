@@ -22,7 +22,6 @@ let addListener = (type, elem, f, args) => {
     if (args.defaultAction === "true") {
       e.preventDefault();
     }
-    console.log(e.defaultPrevented);
     f(e, args.ctx);
   };
 };
@@ -83,7 +82,6 @@ export let Shadow;
           }
 
           clean(node) {
-
             var i = 0;
 
             for (; i < node.childNodes.length; ) {
@@ -139,7 +137,10 @@ export let Shadow;
 
                 //Default action handles the preventdefault action for event handlers
                 let defaultAction = new Map();
-                if (allattributes.get("default") !== undefined) {
+                if (
+                  allattributes.get("default") !== undefined ||
+                  allattributes.get("default") !== ""
+                ) {
                   defaultAction.set(
                     `${allattributes.get("id")}`,
                     allattributes.get("default")
