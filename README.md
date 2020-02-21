@@ -1,7 +1,7 @@
-## Shadow Lib [For personal use]
+## Shadow Lib 
 A functional web component library that wraps the base HTMLElement class and provides a functional
-interface to interact with web components inspired by vueJS. Abstracts away the underlying native  
-html attributes and events providing a simpler interface.
+interface to interact with web components inspired by vueJS. Aims at providing a simpler interface to
+interacting with HTMLElement Class
 
 ##### Why
 > Solves a personal pain point . Needed a functional approach to dealing with HTMLElement class and reduce the boiler plate that 
