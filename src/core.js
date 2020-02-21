@@ -6,10 +6,17 @@ export const html = Range.prototype.createContextualFragment.bind(parseRange);
  * Initializes the application .
  * @param {string} selector
  * @param {html-template} component
+ * @param {doc} document - Passing in the document for testing purposes
  * @returns {void}
  */
-export let init = function(selector, component) {
-  let el = document.querySelector(selector);
+export let init = function(selector, component, doc) {
+  let el = {};
+  if (doc !== undefined) {
+    el = doc.querySelector(selector);
+  } else {
+    el = document.querySelector(selector);
+  }
+
   el.attachShadow({
     mode: "open"
   });
