@@ -28,7 +28,7 @@ let addListener = (type, elem, f, args) => {
     if (args.defaultAction === "true") {
       e.preventDefault();
     }
-    f(e, args.ctx, args.bind);
+    f(e, args);
   };
 };
 
@@ -60,7 +60,7 @@ export let Shadow;
             super();
             this.state = args.state;
             this.methods = args.methods;
-            this.elementcache = {};
+            this.nestedNodes = [];
             this.renderTemplate = document.createElement("template");
 
             this._shadowRoot = this.attachShadow({
@@ -109,13 +109,10 @@ export let Shadow;
             let newTemplate = args.template(this.state);
             let tempDiv = document.createElement("div");
 
-            //append fragment to div
             tempDiv.appendChild(newTemplate);
-            //set inner html for render template
             this.renderTemplate.innerHTML = tempDiv.innerHTML;
-            //empty the temp div to allow it to append the cloned element
+
             tempDiv.innerHTML = "";
-            //pass to clean function
             let cloned = this.clean(
               this.renderTemplate.content.cloneNode(true)
             );
@@ -126,9 +123,7 @@ export let Shadow;
           }
 
           setPassedAttribute = item => {
-            console.log("The item", item);
             let attrArray = Array.from(item.attributes);
-            console.log("THE ATTRIBUTES", attrArray);
 
             var allattributes = new Map();
             attrArray.map(attr => {
@@ -152,10 +147,27 @@ export let Shadow;
           };
 
           _handleAttributes(newTemplate) {
-            console.log("The new template", newTemplate);
+            newTemplate.forEach(this.recursivelyCheckForNodes);
 
-            newTemplate.forEach(this.setPassedAttribute);
+            let filteredNodes = this.nestedNodes.filter(
+              elem => elem.id !== undefined && elem.id !== ""
+            );
+
+            //empty nested nodes after every page refresh
+            this.nestedNodes = [];
+            filteredNodes.forEach(this.setPassedAttribute);
           }
+
+          recursivelyCheckForNodes = node => {
+            if (node.hasChildNodes()) {
+              for (var i = 0; i < node.childNodes.length; i++) {
+                this.nestedNodes.push(node);
+                this.recursivelyCheckForNodes(node.childNodes[i]);
+              }
+            } else {
+              this.nestedNodes.push(node);
+            }
+          };
         };
 
         return clone;
