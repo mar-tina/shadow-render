@@ -10,11 +10,6 @@
     "build": "webpack",
     "cypress:open": "cypress open"
   },
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mar-tina/shadow-lib/issues"
-  },
-  "homepage": "https://github.com/mar-tina/shadow-lib",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
@@ -27,11 +22,12 @@
     "babel-preset-stage-2": "^6.24.1",
     "cypress": "^4.0.2",
     "html-webpack-plugin": "^3.2.0",
-    "jest": "^25.1.0",
     "text-encoding": "^0.7.0",
     "webpack": "^4.29.4",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "shadow-render": "^0.0.3"
+  }
 }
