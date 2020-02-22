@@ -1,13 +1,10 @@
 ## Shadow Lib 
-A functional web component library that wraps the base HTMLElement class and provides a functional
+An experimental functional web component library that wraps the base HTMLElement class and provides a functional
 interface to interact with web components inspired by vueJS. Aims at providing a simpler interface to
-interacting with HTMLElement Class
+interacting with HTMLElement Class.
 
 ##### Why
-> Solves a personal pain point . Needed a functional approach to dealing with HTMLElement class and reduce the boiler plate that 
-> involved setting up new classes each time to define a new shadowRoot. 
-
-##### Why wrap the default HTMLElement class instead of building out components independently ?
+> Solves a personal pain point . Needed a functional approach to dealing with HTMLElement class and reduce the boiler plate ?> > that involved setting up new classes each time to define a new shadowRoot. 
 > This can be done without needing to wrap the HTMLElement class but the default HTML class comes with some defaults like 
 > scoped state .. connectedCallback .. makes development easier.
 
@@ -17,7 +14,7 @@ interacting with HTMLElement Class
 The init function binds the application to the index.html . Default setup binds with the div id '#app' 
 
 ``` 
-    import { init, html } from "../../../src/core.js"; 
+    import { init, html } from "shadow-render/src/core.js"; 
     import "./components/app.js";
 
     let newtemplate = html(
@@ -40,7 +37,7 @@ Create a new shadow element by importing the ```createShadowElement``` function 
 **IMPORTANT** ALL the elements with an event listener must have an id attribute 
 
 ``` 
-   import { html, createShadowElement } from "../../../../src/core.js";
+   import { html, createShadowElement } from "shadow-render/src/core.js";
    
    let MyApp = createShadowElement({
       state: {
@@ -77,7 +74,7 @@ The available events that can be bound to the HTML elements are the ones availab
 The `default` attribute indicates whether to run ``` e.preventDefault() ``` . 
 
 ```
-   import { html, createShadowElement } from "../../../../src/core.js";
+   import { html, createShadowElement } from "shadow-render/src/core.js";
    
    let MyApp = createShadowElement({
       ...
@@ -107,7 +104,7 @@ degrades.
 Can only be called inside the provided objects ['methods', 'onmount'] . Future implementation for ['actions']
 
 ```
-   import { html, createShadowElement } from "../../../../src/core.js";
+   import { html, createShadowElement } from "shadow-render/src/core.js";
    
    let MyApp = createShadowElement({
         methods: {
@@ -150,10 +147,4 @@ You now have a basic app structure setup :tada:
 
 - [:hourglass:] Example App 
 
-
-### BUGS:
-
-### '@`eventName`'
-
-- [:bug:] Binding events changes the other attribute values to undefined || changes the value to the passed in function
 
