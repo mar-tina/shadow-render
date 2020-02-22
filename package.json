@@ -1,20 +1,23 @@
 {
-  "name": "shadow-lib",
+  "name": "shadow-render",
   "version": "0.0.1",
   "author": "mar-tina <marr.tina344@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mar-tina/shadow-lib"
+    "url": "https://github.com/mar-tina/shadow-render"
   },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mar-tina/shadow-render/issues"
+  },
+  "homepage": "https://github.com/mar-tina/shadow-render",
   "scripts": {
     "build": "webpack",
     "cypress:open": "cypress open"
   },
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mar-tina/shadow-lib/issues"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
-  "homepage": "https://github.com/mar-tina/shadow-lib",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
@@ -33,5 +36,7 @@
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "shadow-render": "^0.0.1"
+  }
 }
