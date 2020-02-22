@@ -36,7 +36,5 @@
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.0"
   },
-  "dependencies": {
-    "shadow-render": "^0.0.1"
-  }
+  "dependencies": {}
 }
