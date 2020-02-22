@@ -60,15 +60,19 @@ let Myapp = createShadowElement({
     }</div>
         <input id="todo-input" @oninput="handleInput" /> 
 
-        <button id="state-change" @onclick="handleBtnClick" > SEE STATE CHANGE </button>
+        <div> 
+          <p id="first-nest"> First nest </p>
+          <div>
+            <button id="state-change" @onclick="handleBtnClick" > SEE STATE CHANGE </button>
+          </div>
+        </div>
+        
 
         ${state.todos.map(
           (x, { y = "handleTodoClick" }) =>
             `<div id=${x.id} @onclick=${y}  bind=${x.id}>  Something </div>`
         )}
 
-        
-  
     `);
   }
 });
