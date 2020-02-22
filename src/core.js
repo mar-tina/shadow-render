@@ -28,7 +28,7 @@ let addListener = (type, elem, f, args) => {
     if (args.defaultAction === "true") {
       e.preventDefault();
     }
-    f(e, args.ctx, args.bind);
+    f(e, args);
   };
 };
 
@@ -156,7 +156,6 @@ export let Shadow;
 
             //empty nested nodes after every page refresh
             this.nestedNodes = [];
-            console.log("THESE ARE THE NODES", filteredNodes);
             filteredNodes.forEach(this.setPassedAttribute);
           }
 
