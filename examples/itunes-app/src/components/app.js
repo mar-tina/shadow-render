@@ -43,16 +43,19 @@ let Myapp = createShadowElement({
     onMount: ctx => {
       console.log("mounted", ctx.state);
       // ctx.state.name = "I am now mounted";
-      ctx.setState({
-        name: "I am now mounted"
-      });
+
+      setTimeout(() => {
+        ctx.setState({
+          name: "I am now mounted"
+        });
+      }, 3000);
     }
   },
 
   template: state => {
     return html(`
     
-      <div id="main-app" @onclick="handleClick" default=${false} >Inside main app ${
+      <div id="main-app" bind="Something" @onclick="handleClick" default=${false} >Inside main app ${
       state.name
     }</div>
         <input id="todo-input" @oninput="handleInput" /> 
@@ -61,7 +64,7 @@ let Myapp = createShadowElement({
 
         ${state.todos.map(
           x =>
-            `<div id=${x.id} @onclick="handleTodoClick"  placeholder="TODO"> ${x.name} </div>`
+            `<div id=${x.id} bind=${x.id} @onclick="handleTodoClick"  placeholder="TODO"> ${x.name} </div>`
         )}
   
     `);

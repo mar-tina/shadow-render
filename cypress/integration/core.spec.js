@@ -1,13 +1,6 @@
 import { html, init, createShadowElement } from "../../src/core.js";
 import { mockDocument } from "../../src/mock.js";
 
-let doc = document.implementation.createHTMLDocument("New Document");
-let ndiv = doc.createElement("div");
-ndiv.innerHTML = ` Hello world `;
-ndiv.id = "app";
-
-doc.body.appendChild(ndiv);
-
 describe("Rendering Tests", function() {
   it("Asserts that init works", function() {
     let newtemplate = html(
