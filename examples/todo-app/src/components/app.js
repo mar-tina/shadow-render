@@ -16,25 +16,21 @@ let Myapp = createShadowElement({
   },
 
   methods: {
-    testMethod: ctx => {
-      console.log("Inside test method", ctx);
+    handleClick: (e, args) => {
+      console.log("I am being called", e, args);
     },
 
-    handleClick: (e, ctx) => {
-      console.log("I am being called", e, ctx);
+    handleTodoClick: (e, args) => {
+      console.log("CLICKING TODO", e, args);
     },
 
-    handleTodoClick: (e, ctx) => {
-      console.log("CLICKING TODO", e, ctx);
+    handleInput: (e, args) => {
+      console.log("Some input", e.target.value, args);
     },
 
-    handleInput: (e, ctx) => {
-      console.log("Some input", e.target.value, ctx);
-    },
-
-    handleBtnClick: (e, ctx) => {
-      ctx.setState({
-        todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
+    handleBtnClick: (e, args) => {
+      args.ctx.setState({
+        todos: [...args.ctx.state.todos, { name: "new todo", id: "new-one" }]
       });
     }
   },

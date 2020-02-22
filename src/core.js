@@ -147,7 +147,6 @@ export let Shadow;
           };
 
           _handleAttributes(newTemplate) {
-            console.log("Has child nodes", newTemplate[0].hasChildNodes());
             newTemplate.forEach(this.recursivelyCheckForNodes);
 
             let filteredNodes = this.nestedNodes.filter(
