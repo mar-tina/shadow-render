@@ -16,7 +16,6 @@ export let init = function(selector, component, doc) {
   } else {
     el = document.querySelector(selector);
   }
-
   el.attachShadow({
     mode: "open"
   });
@@ -29,7 +28,7 @@ let addListener = (type, elem, f, args) => {
     if (args.defaultAction === "true") {
       e.preventDefault();
     }
-    f(e, args.ctx);
+    f(e, args.ctx, args.bind);
   };
 };
 
@@ -61,7 +60,7 @@ export let Shadow;
             super();
             this.state = args.state;
             this.methods = args.methods;
-
+            this.elementcache = {};
             this.renderTemplate = document.createElement("template");
 
             this._shadowRoot = this.attachShadow({
@@ -123,53 +122,39 @@ export let Shadow;
 
             tempDiv.appendChild(cloned);
             this._shadowRoot.appendChild(tempDiv.cloneNode(true));
-            this._handleAttributes(tempDiv);
-
-            console.log("THE ROOT", this._shadowRoot);
+            this._handleAttributes(this._shadowRoot.childNodes[0].childNodes);
           }
 
-          _handleAttributes(newTemplate) {
-            for (var i = 0; i < newTemplate.childNodes.length - 1; i++) {
-              if (newTemplate.childNodes[i].attributes !== undefined) {
-                let attrArray = Array.from(
-                  newTemplate.childNodes[i].attributes
-                );
+          setPassedAttribute = item => {
+            console.log("The item", item);
+            let attrArray = Array.from(item.attributes);
+            console.log("THE ATTRIBUTES", attrArray);
 
-                var allattributes = new Map();
-                attrArray.map(attr => {
-                  allattributes.set(`${attr.nodeName}`, `${attr.nodeValue}`);
-                }, "");
+            var allattributes = new Map();
+            attrArray.map(attr => {
+              allattributes.set(`${attr.nodeName}`, `${attr.nodeValue}`);
+            }, "");
 
-                let component = this._shadowRoot.getElementById(
-                  allattributes.get("id")
-                );
+            let component = this._shadowRoot.getElementById(
+              allattributes.get("id")
+            );
 
-                //Default action handles the preventdefault action for event handlers
-                let defaultAction = new Map();
-                if (
-                  allattributes.get("default") !== undefined ||
-                  allattributes.get("default") !== ""
-                ) {
-                  defaultAction.set(
-                    `${allattributes.get("id")}`,
-                    allattributes.get("default")
-                  );
-                }
-
-                for (let [key, value] of allattributes.entries()) {
-                  if (key.startsWith("@")) {
-                    key = key.substr(1);
-                  }
-
-                  addListener(`${key}`, component, this.methods[`${value}`], {
-                    defaultAction: defaultAction.get(
-                      `${allattributes.get("id")}`
-                    ),
-                    ctx: this
-                  });
-                }
+            for (let [key, value] of allattributes.entries()) {
+              if (key.startsWith("@")) {
+                key = key.substr(1);
+                addListener(`${key}`, component, this.methods[`${value}`], {
+                  defaultAction: allattributes.get("default"),
+                  ctx: this,
+                  bound: allattributes.get("bind")
+                });
               }
             }
+          };
+
+          _handleAttributes(newTemplate) {
+            console.log("The new template", newTemplate);
+
+            newTemplate.forEach(this.setPassedAttribute);
           }
         };
 

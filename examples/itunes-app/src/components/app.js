@@ -24,8 +24,8 @@ let Myapp = createShadowElement({
       console.log("I am being called", e, ctx);
     },
 
-    handleTodoClick: e => {
-      console.log("CLICKING TODO", e);
+    handleTodoClick: (e, ctx, args) => {
+      console.log("CLICKING TODO", e, args);
     },
 
     handleInput: (e, ctx) => {
@@ -63,9 +63,11 @@ let Myapp = createShadowElement({
         <button id="state-change" @onclick="handleBtnClick" > SEE STATE CHANGE </button>
 
         ${state.todos.map(
-          x =>
-            `<div id=${x.id} bind=${x.id} @onclick="handleTodoClick"  placeholder="TODO"> ${x.name} </div>`
+          (x, { y = "handleTodoClick" }) =>
+            `<div id=${x.id} @onclick=${y}  bind=${x.id}>  Something </div>`
         )}
+
+        
   
     `);
   }
