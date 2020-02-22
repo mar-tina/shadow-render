@@ -124,6 +124,8 @@ export let Shadow;
             tempDiv.appendChild(cloned);
             this._shadowRoot.appendChild(tempDiv.cloneNode(true));
             this._handleAttributes(tempDiv);
+
+            console.log("THE ROOT", this._shadowRoot);
           }
 
           _handleAttributes(newTemplate) {
