@@ -1,8 +1,20 @@
 {
+  "name": "shadow-lib",
+  "version": "0.0.1",
+  "author": "mar-tina <marr.tina344@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mar-tina/shadow-lib"
+  },
   "scripts": {
     "build": "webpack",
-    "test": "cypress open"
+    "cypress:open": "cypress open"
   },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mar-tina/shadow-lib/issues"
+  },
+  "homepage": "https://github.com/mar-tina/shadow-lib",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
