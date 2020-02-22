@@ -70,7 +70,7 @@ export let Shadow;
             this._render();
           }
 
-          setState(props) {
+          setState(props, rendr) {
             for (var key in props) {
               if (props.hasOwnProperty(key)) {
                 this.state[key] = props[key];
