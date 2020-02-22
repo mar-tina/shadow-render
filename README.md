@@ -4,7 +4,7 @@ interface to interact with web components inspired by vueJS. Aims at providing a
 interacting with HTMLElement Class.
 
 ##### Why
-> Solves a personal pain point . Needed a functional approach to dealing with HTMLElement class and reduce the boiler plate ?> > that involved setting up new classes each time to define a new shadowRoot. 
+> Solves a personal pain point . Needed a functional approach to dealing with HTMLElement class and reduce the boiler plate  that involved setting up new classes each time to define a new shadowRoot. 
 > This can be done without needing to wrap the HTMLElement class but the default HTML class comes with some defaults like 
 > scoped state .. connectedCallback .. makes development easier.
 
