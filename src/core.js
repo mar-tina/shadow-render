@@ -32,6 +32,12 @@ let addListener = (type, elem, f, args) => {
   };
 };
 
+//Solution from MDN DOCS
+function is_all_ws(nod) {
+  // Use ECMA-262 Edition 3 String and RegExp features
+  return !/[^\t\n\r ]/.test(nod.textContent);
+}
+
 /**
  * Passes the 'this' object to all the executing functions when node is mounted or unmounted
  * @param {THIS} elem - object that has reference to the current execution context
@@ -60,7 +66,11 @@ export let Shadow;
             super();
             this.state = args.state;
             this.methods = args.methods;
-            this.nestedNodes = [];
+            this.nestedNodes = {
+              attrNodes: [],
+              cleanNodes: []
+            };
+
             this.renderTemplate = document.createElement("template");
 
             this._shadowRoot = this.attachShadow({
@@ -70,7 +80,7 @@ export let Shadow;
             this._render();
           }
 
-          setState(props, rendr) {
+          setState(props) {
             for (var key in props) {
               if (props.hasOwnProperty(key)) {
                 this.state[key] = props[key];
@@ -118,6 +128,8 @@ export let Shadow;
             );
 
             tempDiv.appendChild(cloned);
+            console.log("THE NODE NOW", tempDiv.childNodes);
+
             this._shadowRoot.appendChild(tempDiv.cloneNode(true));
             this._handleAttributes(this._shadowRoot.childNodes[0].childNodes);
           }
@@ -147,25 +159,28 @@ export let Shadow;
           };
 
           _handleAttributes(newTemplate) {
-            newTemplate.forEach(this.recursivelyCheckForNodes);
+            for (var node of newTemplate) {
+              this.recursivelyCheckForNodes(node, "attrNodes");
+            }
 
-            let filteredNodes = this.nestedNodes.filter(
+            let filteredNodes = this.nestedNodes[`attrNodes`].filter(
               elem => elem.id !== undefined && elem.id !== ""
             );
 
+            console.log("THE FILTERED NODES", filteredNodes);
             //empty nested nodes after every page refresh
-            this.nestedNodes = [];
+            this.nestedNodes[`attrNodes`] = [];
             filteredNodes.forEach(this.setPassedAttribute);
           }
 
-          recursivelyCheckForNodes = node => {
+          recursivelyCheckForNodes = (node, type) => {
             if (node.hasChildNodes()) {
               for (var i = 0; i < node.childNodes.length; i++) {
-                this.nestedNodes.push(node);
-                this.recursivelyCheckForNodes(node.childNodes[i]);
+                this.nestedNodes[`${type}`].push(node);
+                this.recursivelyCheckForNodes(node.childNodes[i], type);
               }
             } else {
-              this.nestedNodes.push(node);
+              this.nestedNodes[`${type}`].push(node);
             }
           };
         };
