@@ -1,4 +1,4 @@
-import { html, createShadowElement } from "../../../../index.js";
+import { html, createShadowElement } from "shadow-render";
 import {
   todoItem,
   mainContainer,
@@ -14,15 +14,16 @@ let Myapp = createShadowElement({
 
   methods: {
     handleInput: (e, args) => {
+      let parsedID = e.target.value.replace(/\s+/g, "-").toLowerCase();
+
       args.ctx.state.todo = {
         name: e.target.value,
-        id: e.target.value,
+        id: parsedID,
         done: false
       };
     },
 
     markAsDone: (e, args) => {
-      console.log("MARKED AS DONE", args);
       args.ctx.state.todos.map(item => {
         if (item.id === args.bound) {
           item.done = !item.done;
@@ -47,8 +48,6 @@ let Myapp = createShadowElement({
       args.ctx.setState({
         todos: [...args.ctx.state.todos, args.ctx.state.todo]
       });
-
-      console.log("The todos", args.ctx.state.todos);
     }
   },
   lifecycle: {
@@ -78,12 +77,13 @@ let todoList = state => {
         ` <div style="${todoItem}" id=${x.id} @onclick=${y}  bind=${x.id}>  ${
           x.name
         } </div> 
-            <div> 
+            <div style="text-align:center;"> 
             <!-- Append a randomized string to svg ID to avoid more than one element sharing the same id -->
             <svg id=${x.id + "rand"} @onclick="deleteTodo"  bind=${
           x.id
         } xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 
+            <!-- Append a randomized string to svg ID to avoid more than one element sharing the same id -->
             <svg id=${x.id + "abs"} @onclick="markAsDone" bind=${
           x.id
         }  xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke=${

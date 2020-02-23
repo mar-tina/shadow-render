@@ -1,4 +1,4 @@
-import { init, html } from "../../../index.js";
+import { init, html } from "shadow-render";
 
 import "./components/app.js";
 
