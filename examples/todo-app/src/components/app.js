@@ -1,4 +1,4 @@
-import { html, createShadowElement } from "shadow-render";
+import { html, createShadowElement } from "../../../../src/core.js";
 import {
   todoItem,
   mainContainer,
@@ -50,6 +50,14 @@ let Myapp = createShadowElement({
       args.ctx.setState({
         todos: [...args.ctx.state.todos, args.ctx.state.todo]
       });
+    },
+
+    handleEdit: (e, args) => {
+      args.ctx.state.todos.map(item => {
+        if (item.id === args.bound) {
+          item.name = sanitize(e.target.innerHTML);
+        }
+      });
     }
   },
   lifecycle: {
@@ -75,10 +83,9 @@ let Myapp = createShadowElement({
 let todoList = state => {
   return `${state.todos
     .map(
-      (x, { y = "handleTodoClick" }) =>
-        ` <div style="${todoItem}" id=${x.id} @onclick=${y}  bind=${x.id}>  ${
-          x.name
-        } </div> 
+      x =>
+        ` <div @oninput="handleEdit" contentEditable=${true} style="${todoItem}" id=${x.id +
+          "none"}  bind=${x.id}>  ${x.name} </div> 
             <div style="text-align:center;"> 
             <!-- Append a randomized string to svg ID to avoid more than one element sharing the same id -->
             <svg id=${x.id + "rand"} @onclick="deleteTodo"  bind=${
@@ -91,8 +98,7 @@ let todoList = state => {
         }  xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke=${
           x.done ? "green" : "black"
         } stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-
-            </div>`
+        </div>`
     )
     .join("")}`;
 };
