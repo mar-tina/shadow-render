@@ -1,4 +1,4 @@
-import { html, createShadowElement } from "../../../../src/core.js";
+import { html, createShadowElement } from "../../../../index.js";
 import {
   todoItem,
   mainContainer,
@@ -57,7 +57,7 @@ let Myapp = createShadowElement({
     }
   },
 
-  template: state => {
+  template: ctx => {
     return html(`
         <div style="${mainContainer}">
         <p> TODOS </p>
@@ -66,7 +66,7 @@ let Myapp = createShadowElement({
             <button style="${submitButton}" id="state-change" @onclick="handleBtnClick" > Submit Todo </button>
           </div>
 
-        <div style="${todoItems}" id="todoList"> ${todoList(state)} </div>
+        <div style="${todoItems}" id="todoList"> ${todoList(ctx.state)} </div>
         </div>`);
   }
 });

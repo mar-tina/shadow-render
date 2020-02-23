@@ -107,7 +107,7 @@ export let Shadow;
                   is_all_ws(node.childNodes[i]))
               ) {
                 node.removeChild(node.childNodes[i]);
-              } else if (child.nodeType === 1) {
+              } else if (node.childNodes[i].nodeType === 1) {
                 this.clean(node.childNodes[i]);
               }
               i += 1;
@@ -117,7 +117,7 @@ export let Shadow;
           }
 
           _render() {
-            let newTemplate = args.template(this.state);
+            let newTemplate = args.template(this);
             let tempDiv = document.createElement("div");
 
             tempDiv.appendChild(newTemplate);

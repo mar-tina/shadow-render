@@ -107,4 +107,4 @@ dist
 examples/
 cypress/
 cypress.json
-src/mock.js
+src/

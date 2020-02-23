@@ -1,10 +1,10 @@
 {
   "name": "shadow-render",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "author": "mar-tina <marr.tina344@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mar-tina/shadow-lib"
+    "url": "https://github.com/mar-tina/shadow-render"
   },
   "scripts": {
     "build": "webpack",

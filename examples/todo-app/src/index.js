@@ -1,4 +1,4 @@
-import { init, html } from "../../../src/core.js";
+import { init, html } from "../../../index.js";
 
 import "./components/app.js";
 
