@@ -103,7 +103,8 @@ export let Shadow;
             for (; i < node.childNodes.length; ) {
               if (
                 node.childNodes[i].nodeType === 8 ||
-                node.childNodes[i].nodeType === 3
+                (node.childNodes[i].nodeType === 3 &&
+                  is_all_ws(node.childNodes[i]))
               ) {
                 node.removeChild(node.childNodes[i]);
               } else if (child.nodeType === 1) {
@@ -128,7 +129,6 @@ export let Shadow;
             );
 
             tempDiv.appendChild(cloned);
-            console.log("THE NODE NOW", tempDiv.childNodes);
 
             this._shadowRoot.appendChild(tempDiv.cloneNode(true));
             this._handleAttributes(this._shadowRoot.childNodes[0].childNodes);
@@ -167,7 +167,6 @@ export let Shadow;
               elem => elem.id !== undefined && elem.id !== ""
             );
 
-            console.log("THE FILTERED NODES", filteredNodes);
             //empty nested nodes after every page refresh
             this.nestedNodes[`attrNodes`] = [];
             filteredNodes.forEach(this.setPassedAttribute);
