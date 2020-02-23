@@ -65,7 +65,7 @@ To initialize the application . The toolkit provides an init function that requi
 - {template} The result of calling the html `parser` provided by the toolkit
 
 ```
-    import { init, html } from "shadow-render/src/core.js";
+    import { init, html } from "shadow-render";
     import "./components/app.js";
 
     let newtemplate = html(
