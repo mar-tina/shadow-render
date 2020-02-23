@@ -1,4 +1,4 @@
-import { html, createShadowElement } from "../../../../src/core.js";
+import { html, createShadowElement } from "shadow-render";
 import {
   todoItem,
   mainContainer,
