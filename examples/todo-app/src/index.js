@@ -3,12 +3,7 @@ import { init, html } from "../../../src/core.js";
 import "./components/app.js";
 
 let newtemplate = html(
-  "<div>" +
-    " <p>Welcome to the page</p> " +
-    "<div> " +
-    " <main-app> </main-app> " +
-    "</div>" +
-    "</div>"
+  "<div>" + "<div> " + " <main-app> </main-app> " + "</div>" + "</div>"
 );
 
 const myTemplate = () => newtemplate;
