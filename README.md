@@ -12,20 +12,57 @@ interacting with HTMLElement Class.
 
 ### Installation
 
-Using npm package manager
+#### Using npm package manager
+
 ```
-  npm install shadow-render 
+  npm install shadow-render
 ```
-Using yarn 
+
+#### Using yarn
+
 ```
   yarn add shadow-render
 ```
 
-### USAGE:
-#### Initializing the application.
-The toolkit is 
+#### Using the template
 
-The init function binds the application to the index.html . Default setup binds with the div id '#app'
+You can clone the repo as a template directly on Github and create a new repo in your account or:
+
+Clone the template repo [template repo](https://github.com/mar-tina/shadow-render-template)
+
+```
+  git clone https://github.com/mar-tina/shadow-render-template.git
+```
+
+Remove the origin
+
+```
+  git remote remove origin
+```
+
+Set your own origin
+
+```
+  git remote set-url origin [your-repo]
+```
+
+Check if the remote is set
+
+```
+  git remote -v
+```
+
+### USAGE:
+
+#### Initializing the application.
+
+**Disclaimer**: Toolkit is built around the concepts that i understand personally. There was no design document .
+The process for coming up with this toolkit was on a build as you go basis .
+
+To initialize the application . The toolkit provides an init function that requires you to pass
+
+- {id} The div to bind to in index.html
+- {template} The result of calling the html `parser` provided by the toolkit
 
 ```
     import { init, html } from "shadow-render/src/core.js";
@@ -52,7 +89,7 @@ Create a new shadow element by importing the `createShadowElement` function from
 **IMPORTANT** ALL the elements with an event listener must have an id attribute
 
 ```
-   import { html, createShadowElement } from "shadow-render/src/core.js";
+   import { html, createShadowElement } from "shadow-render";
 
    let MyApp = createShadowElement({
       state: {
@@ -80,10 +117,18 @@ Create a new shadow element by importing the `createShadowElement` function from
 
 Prepend the event to bind to with an '@'.
 
-`<button @onclick="methodToCall"> Click me </button>`
+```
+  <button @onclick="methodToCall"> Click me </button>
+```
 
-The event handlers are passed in the event object and "context" consecutively [using context loosely]
-meaning the execution context of the component that provides access to the state object in the component.
+The methods are passed in the resulting event object and an args object
+
+- {args.ctx} - This is the current execution context
+- {args.bound} - This is the value that is bound to the method.
+
+Why use bind ? The toolkit uses a very primitive html parser. Meaning it's difficult to pass around objects
+The bind attribute specifies the props that should be available to the passed in method. They are returned and
+passed in as defaults to the method being called
 
 The available events that can be bound to the HTML elements are the ones available in the native browser.
 [only tested on chrome].
@@ -91,7 +136,7 @@ The available events that can be bound to the HTML elements are the ones availab
 The `default` attribute indicates whether to run `e.preventDefault()` .
 
 ```
-   import { html, createShadowElement } from "shadow-render/src/core.js";
+   import { html, createShadowElement } from "shadow-render";
 
    let MyApp = createShadowElement({
       ...
@@ -120,10 +165,25 @@ SetState updates the state and re-renders the component. The current implementat
 elements are added to the screen and depending on how fast the elements are being rendered the performance
 degrades.
 
-Can only be called inside the provided objects ['methods', 'onmount'] . Future implementation for ['actions']
+There are times where you would prefere to set state but not re-render the app. For example when you are
+handling input . In this instance you can set the state directly as illustrated in the example todo-app in the
+examples directory
 
 ```
-   import { html, createShadowElement } from "shadow-render/src/core.js";
+  ...
+    args.ctx.state.todo = {
+        name: e.target.value, <--
+        ...
+    };
+  ...
+```
+
+The execution context is only available inside the provided objects ['methods', 'onmount', 'template'] .
+
+Future implementation for ['actions']
+
+```
+   import { html, createShadowElement } from "shadow-render";
 
    let MyApp = createShadowElement({
         methods: {
@@ -164,4 +224,4 @@ You now have a basic app structure setup :tada:
 
 - [:hourglass:] Handling props being passed down from the parent
 
-- [:hourglass:] Example App
+- [:white_check_mark:] Example App
