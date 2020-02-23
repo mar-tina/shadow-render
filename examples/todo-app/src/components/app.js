@@ -6,6 +6,7 @@ import {
   inputTodo,
   todoItems
 } from "./appStyle.js";
+import { sanitize } from "./utils.js";
 
 let Myapp = createShadowElement({
   state: {
@@ -14,10 +15,11 @@ let Myapp = createShadowElement({
 
   methods: {
     handleInput: (e, args) => {
-      let parsedID = e.target.value.replace(/\s+/g, "-").toLowerCase();
+      let sanitizedInput = sanitize(e.target.value);
+      let parsedID = sanitizedInput.replace(/\s+/g, "-").toLowerCase();
 
       args.ctx.state.todo = {
-        name: e.target.value,
+        name: sanitizedInput,
         id: parsedID,
         done: false
       };
