@@ -6,9 +6,7 @@ An experimental functional web component toolkit that wraps the base HTMLElement
 interface to interact with web components inspired by vueJS. Aims at providing a simpler interface to
 interacting with HTMLElement Class.
 
-
 ### For a more structured usage tutorial . Look at the classic [todo-app](https://github.com/mar-tina/shadow-render/tree/master/examples)
-
 
 ### Installation
 
@@ -216,7 +214,7 @@ You now have a basic app structure setup :tada:
 
 Example App:
 ------------ |
-<img src="https://github.com/mar-tina/shadow-render/blob/master/screenshots/todo.gif" alt="todo app" height="500px"> | 
+<img src="https://github.com/mar-tina/shadow-render/blob/master/screenshots/todo.gif" alt="todo app" height="500px"> |
 
 ### TODO:
 
@@ -233,3 +231,7 @@ Example App:
 - [:hourglass:] Handling props being passed down from the parent
 
 - [:white_check_mark:] Example App
+
+## KEYWORDS
+
+template shadow-dom HTMLElement

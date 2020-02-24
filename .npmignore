@@ -108,3 +108,10 @@ examples/
 cypress/
 cypress.json
 src/
+
+#images
+*.gif
+*.png
+*.jpeg
+*.mp4
+LICENSE
