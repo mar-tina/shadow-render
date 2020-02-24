@@ -7,7 +7,7 @@ interface to interact with web components inspired by vueJS. Aims at providing a
 interacting with HTMLElement Class.
 
 
-### For a more structured usage tutorial . Look at the classic [todo-app](https://mar-tina.github.io/shadow-render/examples/)
+### For a more structured usage tutorial . Look at the classic [todo-app](https://github.com/mar-tina/shadow-render/tree/master/examples)
 
 
 ### Installation
