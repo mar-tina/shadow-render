@@ -8,6 +8,7 @@ To create an app with shadow-render tutorial you can:
 
   📦todo-app
   ┣ 📂public
+  
   ┃ ┗ 📜index.html
   ┣ 📂src
   ┃ ┣ 📂components
