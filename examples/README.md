@@ -2,6 +2,8 @@
 
 To create an app with shadow-render tutorial you can:
 
+Use the template [repository](https://github.com/mar-tina/shadow-render-template)
+
 **Set it up from scratch**
 
 - Directory structure
