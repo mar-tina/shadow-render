@@ -5,6 +5,7 @@ To create an app with shadow-render tutorial you can:
 **Set it up from scratch**
 
 - Directory structure
+
   +-- \_public
   | | +-- index.html
   +-- \_src
@@ -14,6 +15,7 @@ To create an app with shadow-render tutorial you can:
   +-- webpack.config.js
 
 - DevDependencies
+
   "@babel/cli": "^7.8.4",
   "@babel/core": "^7.8.4",
   "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -27,6 +29,7 @@ To create an app with shadow-render tutorial you can:
   "webpack-dev-server": "^3.1.0"
 
 - Dependencies
+
   "shadow-render": "^0.2.0" <-- Get the latest one
 
 - Webpack config content
