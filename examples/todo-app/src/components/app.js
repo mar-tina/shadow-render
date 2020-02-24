@@ -55,7 +55,7 @@ let Myapp = createShadowElement({
     handleEdit: (e, args) => {
       args.ctx.state.todos.map(item => {
         if (item.id === args.bound) {
-          item.name = sanitize(e.target.innerHTML);
+          item.name = sanitize(e.target.innerText);
         }
       });
     }
