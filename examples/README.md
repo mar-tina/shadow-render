@@ -381,4 +381,9 @@ Thats it :tada: You have a working CRUD Todo Application. Final part has to do w
 
 **The Full working application is in the todo-app directory in the examples directory**
 
+Example App:
+------------ |
+<img src="https://github.com/mar-tina/shadow-render/blob/master/screenshots/todo.gif" alt="todo app" height="500px"> | 
+
+
 Feel Free to submit issues and add your own features to the example app and to the toolkit. :tada:
