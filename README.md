@@ -215,7 +215,7 @@ Future implementation for ['actions']
 You now have a basic app structure setup :tada:
 
 Example App:
-![The classic TODO APP](/screenshots/Todo.gif)
+![The classic TODO APP](/screenshots/todo.gif)
 
 ### TODO:
 
