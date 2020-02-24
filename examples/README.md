@@ -76,11 +76,10 @@ To create an app with shadow-render tutorial you can:
 
 #### Install dependencies
 
-    ``` yarn install ```
-    ``` npm install ```
+    yarn install
+    npm install
 
 #### Run App
 
-    - ``` yarn serve ```
-    - ``` npm run serve ```
-
+    yarn serve
+    npm run serve
