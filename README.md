@@ -50,6 +50,8 @@ Check if the remote is set
 
 ### USAGE:
 
+For a more structured usage tutorial . Look at the classic [todo-app](https://mar-tina.github.io/shadow-render/examples/)
+
 #### Initializing the application.
 
 **Disclaimer**: Toolkit is built around the concepts that i understand personally. There was no design document .
@@ -120,7 +122,7 @@ Prepend the event to bind to with an '@'.
   <button @onclick="methodToCall"> Click me </button>
 ```
 
-The methods are provided event object and an args object by default and get 'undefined' if any of the
+The methods are provided the event object and an args object by default and get 'undefined' if any of the
 attributes is missing
 
 - [args.ctx] - This is the current execution context
