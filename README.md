@@ -6,12 +6,6 @@ An experimental functional web component toolkit that wraps the base HTMLElement
 interface to interact with web components inspired by vueJS. Aims at providing a simpler interface to
 interacting with HTMLElement Class.
 
-##### Why
-
-> Solves a personal pain point . Needed a functional approach to dealing with HTMLElement class and reduce the boiler plate that involved setting up new classes each time to define a new shadowRoot.
-> This can be done without needing to wrap the HTMLElement class but the default HTML class comes with some defaults like
-> scoped state .. connectedCallback .. makes development easier.
-
 ### Installation
 
 #### Using npm package manager
@@ -61,10 +55,10 @@ Check if the remote is set
 **Disclaimer**: Toolkit is built around the concepts that i understand personally. There was no design document .
 The process for coming up with this toolkit was on a build as you go basis .
 
-To initialize the application . The toolkit provides an init function that requires you to pass
+To initialize the application . The toolkit provides an init function that requires you to pass in:
 
-- {id} The div to bind to in index.html
-- {template} The result of calling the html `parser` provided by the toolkit
+- [id] The div to bind to in index.html
+- [template] The result of calling the html `parser` provided by the toolkit
 
 ```
     import { init, html } from "shadow-render";
@@ -88,7 +82,8 @@ To initialize the application . The toolkit provides an init function that requi
 
 Create a new shadow element by importing the `createShadowElement` function from the lib and add a new tag id to the document by calling `customElements.define`
 
-**IMPORTANT** ALL the elements with an event listener must have an id attribute
+Code example below illustrates how to read state. The template object as a default has the ctx passed in
+as a param when app is being instantiated . The ctx avails the state object to the template object
 
 ```
    import { html, createShadowElement } from "shadow-render";
@@ -100,10 +95,10 @@ Create a new shadow element by importing the `createShadowElement` function from
 
       methods: {},
 
-      template: state => {
+      template: ctx => {
         return html(`
           <div id="my-app">
-            Inside main app ${state.name}</div>
+            Inside main app ${ctx.state.name}</div>
          `)
       }
 
@@ -115,6 +110,8 @@ Create a new shadow element by importing the `createShadowElement` function from
 
 #### Adding event handlers.
 
+**IMPORTANT** ALL the elements with an event listener must have an id attribute
+
 ##### Syntax.
 
 Prepend the event to bind to with an '@'.
@@ -123,14 +120,15 @@ Prepend the event to bind to with an '@'.
   <button @onclick="methodToCall"> Click me </button>
 ```
 
-The methods are passed in the resulting event object and an args object
+The methods are provided event object and an args object by default and get 'undefined' if any of the
+attributes is missing
 
-- {args.ctx} - This is the current execution context
-- {args.bound} - This is the value that is bound to the method.
+- [args.ctx] - This is the current execution context
+- [args.bound] - This is the value that is bound to the method.
 
-Why use bind ? The toolkit uses a very primitive html parser. Meaning it's difficult to pass around objects
+Why use bind ? The toolkit uses a very primitive html parser. Meaning it's difficult to pass around objects.
 The bind attribute specifies the props that should be available to the passed in method. They are returned and
-passed in as defaults to the method being called
+passed in as defaults to the method being called.
 
 The available events that can be bound to the HTML elements are the ones available in the native browser.
 [only tested on chrome].
@@ -144,15 +142,16 @@ The `default` attribute indicates whether to run `e.preventDefault()` .
       ...
 
       methods: {
-        handleClick: (e, ctx) => {
-          console.log("Been clicked", e, ctx);
+        handleClick: (e, args) => {
+          console.log("Been clicked", e, args.ctx);
         }
       },
 
-      template: state => {
+      template: ctx => {
         html(`
           <div @onclick="handleClick" default=${false} id="main-app">
-            Inside main app ${state.name}</div>
+            Illustrate onclick event
+          </div>
         `)
       }
    })
@@ -167,9 +166,38 @@ SetState updates the state and re-renders the component. The current implementat
 elements are added to the screen and depending on how fast the elements are being rendered the performance
 degrades.
 
-There are times where you would prefere to set state but not re-render the app. For example when you are
+```
+   import { html, createShadowElement } from "shadow-render";
+
+   let MyApp = createShadowElement({
+        methods: {
+         ...
+         handleBtnClick: (e, args) => {
+          args.ctx.setState({
+            todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
+          });
+        }
+       }
+
+       template: ctx => {
+        html(`
+          <div @onclick="handleClick" default=${false} id="main-app">
+            Inside main app ${ctx.state.name}</div>
+
+          <button @onclick="handleBtnClick" id="state-change"> State Change </button>
+        `)
+      }
+   })
+
+   ...
+```
+
+There are times where you would prefer to set state but not re-render the app. For example when you are
 handling input . In this instance you can set the state directly as illustrated in the example todo-app in the
-examples directory
+examples directory and snippet below
+
+The execution context is only available inside the provided objects ['methods', 'lifecycle', 'template'] .
+Future implementation for ['actions']
 
 ```
   ...
@@ -178,36 +206,6 @@ examples directory
         ...
     };
   ...
-```
-
-The execution context is only available inside the provided objects ['methods', 'onmount', 'template'] .
-
-Future implementation for ['actions']
-
-```
-   import { html, createShadowElement } from "shadow-render";
-
-   let MyApp = createShadowElement({
-        methods: {
-         ...
-         handleBtnClick: (e, ctx) => {
-          ctx.setState({
-            todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
-          });
-        }
-       }
-
-       template: state => {
-        html(`
-          <div @onclick="handleClick" default=${false} id="main-app">
-            Inside main app ${state.name}</div>
-
-          <button @onclick="handleBtnClick" id="state-change"> State Change </button>
-        `)
-      }
-   })
-
-   ...
 ```
 
 You now have a basic app structure setup :tada:

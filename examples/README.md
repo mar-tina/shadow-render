@@ -7,17 +7,27 @@ To create an app with shadow-render tutorial you can:
 - Directory structure
 
   📦todo-app
+
   ┣ 📂public
-  
+
   ┃ ┗ 📜index.html
+
   ┣ 📂src
+
   ┃ ┣ 📂components
+
   ┃ ┃ ┣ 📜app.js
+
   ┃ ┃ ┣ 📜appStyle.js
+
   ┃ ┗ 📜index.js
+
   ┣ 📜.babelrc
+
   ┣ 📜.gitignore
+
   ┣ 📜package.json
+
   ┗ 📜webpack.config.js
 
 - DevDependencies

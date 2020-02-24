@@ -68,7 +68,6 @@ export let Shadow;
             this.methods = args.methods;
             this.nestedNodes = {
               attrNodes: [],
-              cleanNodes: []
             };
 
             this.renderTemplate = document.createElement("template");
@@ -86,8 +85,7 @@ export let Shadow;
                 this.state[key] = props[key];
               }
             }
-            // Solution inspired by https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
-            //clearing all the nodes in the shadow root
+
             var i = 0;
             for (; i < this._shadowRoot.childNodes.length; ) {
               this._shadowRoot.removeChild(this.shadowRoot.childNodes[i]);
