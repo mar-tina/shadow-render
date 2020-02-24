@@ -6,6 +6,10 @@ An experimental functional web component toolkit that wraps the base HTMLElement
 interface to interact with web components inspired by vueJS. Aims at providing a simpler interface to
 interacting with HTMLElement Class.
 
+
+### For a more structured usage tutorial . Look at the classic [todo-app](https://mar-tina.github.io/shadow-render/examples/)
+
+
 ### Installation
 
 #### Using npm package manager
@@ -49,8 +53,6 @@ Check if the remote is set
 ```
 
 ### USAGE:
-
-For a more structured usage tutorial . Look at the classic [todo-app](https://mar-tina.github.io/shadow-render/examples/)
 
 #### Initializing the application.
 
