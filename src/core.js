@@ -228,11 +228,12 @@ export let Shadow;
       };
 
       ContextProvider.prototype.subToContext = function(label, callback) {
+        let self = this;
         if (!this.providers[`${label}`]) {
           throw new Error("Provider does not exist");
         } else {
           this.providers[`${label}`].subs.push(callback);
-          return "Successfully subbed to context";
+          return self;
         }
       };
 
@@ -243,8 +244,12 @@ export let Shadow;
   })(Shadow.Base || (Shadow.Base = {}));
 })(Shadow || (Shadow = {}));
 
+let globalProvider = Shadow.Base.ContextProvider;
+
 export let createShadowElement = args => {
-  let newProvider = Shadow.Base.ContextProvider;
-  let newClass = new Shadow.Base.BaseElement.prototype.clone(args, newProvider);
+  let newClass = new Shadow.Base.BaseElement.prototype.clone(
+    args,
+    globalProvider
+  );
   return newClass;
 };
