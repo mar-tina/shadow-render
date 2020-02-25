@@ -4662,10 +4662,10 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-shadow-render@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/shadow-render/-/shadow-render-0.2.0.tgz#8aa5ab19cde904bf944be1646d03e77a7fd2181c"
-  integrity sha512-18KHCA94l9/FRLAhGBmqA5lMEv8whP3Kd/i7iG4yvvKHssfIA9utvuxrlK2BiJzA1MO8dmQCse+rvEcrRsLJ9Q==
+shadow-render@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/shadow-render/-/shadow-render-0.4.0.tgz#5e47d5369e528c160b357462b98413a698b73c1f"
+  integrity sha512-fCpgQ8YWx+qXSd9LSRcbTvhFE7tVln/1INP/sgCP+I2oZh07sl+ZjsQ91RsHVVa2fB6FvgVkntd7MiRHJwHRew==
 
 shebang-command@^1.2.0:
   version "1.2.0"

@@ -208,7 +208,7 @@ var Shadow;
     var BaseElement = function () {
       function BaseElement() {}
 
-      BaseElement.prototype.clone = function (args) {
+      BaseElement.prototype.clone = function (args, provider) {
         var _temp;
 
         var clone = (_temp =
@@ -288,9 +288,10 @@ var Shadow;
 
             _this.state = args.state;
             _this.methods = args.methods;
+            _this.actions = args.actions;
+            _this.provider = provider;
             _this.nestedNodes = {
-              attrNodes: [],
-              cleanNodes: []
+              attrNodes: []
             };
             _this.renderTemplate = document.createElement("template");
             _this._shadowRoot = _this.attachShadow({
@@ -309,9 +310,7 @@ var Shadow;
                 if (props.hasOwnProperty(key)) {
                   this.state[key] = props[key];
                 }
-              } // Solution inspired by https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
-              //clearing all the nodes in the shadow root
-
+              }
 
               var i = 0;
 
@@ -351,7 +350,8 @@ var Shadow;
               var cloned = this.clean(this.renderTemplate.content.cloneNode(true));
               tempDiv.appendChild(cloned);
 
-              this._shadowRoot.appendChild(tempDiv.cloneNode(true));
+              this._shadowRoot.appendChild(tempDiv.cloneNode(true)); //set attributes after elements are mounted to DOM
+
 
               this._handleAttributes(this._shadowRoot.childNodes[0].childNodes);
             }
@@ -400,11 +400,62 @@ var Shadow;
     }();
 
     Base.BaseElement = BaseElement;
+
+    var ContextProvider = function () {
+      function ContextProvider() {
+        this.providers = {};
+      }
+
+      ContextProvider.prototype.addNewContext = function (label, data) {
+        if (!this.providers.hasOwnProperty(label)) {
+          this.providers["".concat(label)] = {};
+        }
+
+        var self = this.providers["".concat(label)];
+        self.data = data;
+        self.subs = [];
+        var handler = {
+          get: function get(target, property, receiver) {
+            self.subs.forEach(function (item) {
+              if (item.listenOn === "get") {
+                item.f(property, target[property]);
+              }
+            });
+            return Reflect.get(target, property, receiver);
+          },
+          set: function set(target, property, value, receiver) {
+            var setResult = Reflect.set(target, property, value);
+            self.subs.forEach(function (item) {
+              if (item.listenOn === "set") {
+                item.f(property, target[property]);
+              }
+            });
+            return setResult;
+          }
+        };
+        self.proxyObject = new Proxy(self.data, handler);
+        return self;
+      };
+
+      ContextProvider.prototype.subToContext = function (label, callback) {
+        if (!this.providers["".concat(label)]) {
+          throw new Error("Provider does not exist");
+        } else {
+          this.providers["".concat(label)].subs.push(callback);
+          return "Successfully subbed to context";
+        }
+      };
+
+      return ContextProvider;
+    }();
+
+    Base.ContextProvider = new ContextProvider();
   })(Shadow.Base || (Shadow.Base = {}));
 })(Shadow || (Shadow = {}));
 
 var createShadowElement = function createShadowElement(args) {
-  var newClass = new Shadow.Base.BaseElement.prototype.clone(args);
+  var newProvider = Shadow.Base.ContextProvider;
+  var newClass = new Shadow.Base.BaseElement.prototype.clone(args, newProvider);
   return newClass;
 };
 

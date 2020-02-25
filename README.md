@@ -64,12 +64,10 @@ To initialize the application . The toolkit provides an init function that requi
     import "./components/app.js";
 
     let newtemplate = html(
-      `<div>
-        <p>Welcome to the page</p>
-        <div>
+      ` ...
           <my-app> </my-app>
-        </div>
-      </div>`
+        ...
+      `
     );
 
     const myTemplate = () => newtemplate;
@@ -88,19 +86,15 @@ as a param when app is being instantiated . The ctx avails the state object to t
    import { html, createShadowElement } from "shadow-render";
 
    let MyApp = createShadowElement({
-      state: {
-        name: "Welcome to the shadows"
-      },
+      state: {},
 
       methods: {},
 
       template: ctx => {
         return html(`
-          <div id="my-app">
-            Inside main app ${ctx.state.name}</div>
+            <div> New Template </div>
          `)
       }
-
    })
 
    customElements.define("my-app", MyApp)
@@ -135,28 +129,21 @@ The available events that can be bound to the HTML elements are the ones availab
 The `default` attribute indicates whether to run `e.preventDefault()` .
 
 ```
-   import { html, createShadowElement } from "shadow-render";
-
-   let MyApp = createShadowElement({
-      ...
-
-      methods: {
-        handleClick: (e, args) => {
-          console.log("Been clicked", e, args.ctx);
-        }
-      },
-
-      template: ctx => {
-        html(`
-          <div @onclick="handleClick" default=${false} id="main-app">
-            Illustrate onclick event
-          </div>
-        `)
+   ...
+    methods: {
+      handleClick: (e, args) => {
+        console.log("Been clicked", e, args.ctx);
       }
-   })
+    },
 
-   customElements.define("my-app", MyApp)
-
+    template: ctx => {
+      html(`
+        <div @onclick="handleClick" default=${false} id="main-app">
+          Illustrate onclick event
+        </div>
+      `)
+    }
+  ...
 ```
 
 #### SetState
@@ -166,29 +153,25 @@ elements are added to the screen and depending on how fast the elements are bein
 degrades.
 
 ```
-   import { html, createShadowElement } from "shadow-render";
+    ...
+    methods: {
+      ...
+      handleBtnClick: (e, args) => {
+      args.ctx.setState({
+        todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
+      });
+    }
+    }
 
-   let MyApp = createShadowElement({
-        methods: {
-         ...
-         handleBtnClick: (e, args) => {
-          args.ctx.setState({
-            todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
-          });
-        }
-       }
+    template: ctx => {
+      html(`
+        <div @onclick="handleClick" default=${false} id="main-app">
+          Inside main app ${ctx.state.name}</div>
 
-       template: ctx => {
-        html(`
-          <div @onclick="handleClick" default=${false} id="main-app">
-            Inside main app ${ctx.state.name}</div>
-
-          <button @onclick="handleBtnClick" id="state-change"> State Change </button>
-        `)
-      }
-   })
-
-   ...
+        <button @onclick="handleBtnClick" id="state-change"> State Change </button>
+      `)
+    }
+  ...
 ```
 
 There are times where you would prefer to set state but not re-render the app. For example when you are
@@ -206,6 +189,73 @@ Future implementation for ['actions']
     };
   ...
 ```
+
+##### Working with actions
+
+For example if you want to subscribe to a given context. They work on the same foundation as methods. Define
+your actions and then call them passing in the necessarry arguments. The contextProvider will be explained in the
+next section.
+
+```
+  actions: {
+    subscribe: (self, contextProvider) => {
+      let callback = {
+        listenOn: "set",
+        f: (property, args) => {
+          self.setState({
+            todos: args
+          });
+        }
+      };
+      try {
+        return contextProvider.subToContext("todoCtx", callback);
+      } catch (error) {
+        console.log("Failed", error);
+      }
+    }
+  }
+```
+
+##### Working with context providers
+
+Compared to passing down props to child elements providers provide global access to published data.
+It uses the pub sub model where other elements sub and get the returned data or side effects from the
+element that published the data.
+
+**Caveat** The subscribers can change the data
+
+The contex providers have 2 methods:
+
+```
+  contextProvider.addNewContext(arg1, arg2);
+```
+
+arg1 - The name of the new context to be added.
+arg2 - The object to be watched by the context.
+
+```
+  contextProvider.subToContext(arg1, arg2)
+```
+
+arg1 - name of the context to sub to.
+arg2 - the callback
+
+The structure of the callback is important. It has to have a `listenOn` attribute and the callback function.
+The callback function is passed back in 2 values, The property name that was changed and it's current value.
+The `listenOn` attribute listens to either `set` or `get` calls on the object being watched by the proxy that
+runs in the context provider
+
+```
+  callback = {
+    listenOn: "set"
+    f: (property, args) => {
+      console.log(`This property changed ${property} and this it's current value ${args}`)
+    }
+  }
+```
+
+Full implementation of the todo app in the examples that will give a better perspective on how
+the toolkit works.
 
 You now have a basic app structure setup :tada:
 
