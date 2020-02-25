@@ -8,6 +8,8 @@ interacting with HTMLElement Class.
 
 ### For a more structured usage tutorial . Look at the classic [todo-app](https://github.com/mar-tina/shadow-render/tree/master/examples)
 
+[Click here](https://mar-tina.github.io/todo-sample-app/) For live app
+
 ### Installation
 
 #### Using npm package manager
