@@ -230,15 +230,17 @@ The contex providers have 2 methods:
   contextProvider.addNewContext(arg1, arg2);
 ```
 
-arg1 - The name of the new context to be added.
-arg2 - The object to be watched by the context.
+``` arg1 - The name of the new context to be added. ```
+
+``` arg2 - The object to be watched by the context. ```
 
 ```
   contextProvider.subToContext(arg1, arg2)
 ```
 
-arg1 - name of the context to sub to.
-arg2 - the callback
+``` arg1 - name of the context to sub to. ```
+
+``` arg2 - the callback ```
 
 The structure of the callback is important. It has to have a `listenOn` attribute and the callback function.
 The callback function is passed back in 2 values, The property name that was changed and it's current value.
@@ -282,6 +284,3 @@ Example App:
 
 - [:white_check_mark:] Example App
 
-## KEYWORDS
-
-template shadow-dom HTMLElement
