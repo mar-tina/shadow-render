@@ -54,9 +54,6 @@ Check if the remote is set
 
 #### Initializing the application.
 
-**Disclaimer**: Toolkit is built around the concepts that i understand personally. There was no design document .
-The process for coming up with this toolkit was on a build as you go basis .
-
 To initialize the application . The toolkit provides an init function that requires you to pass in:
 
 - [id] The div to bind to in index.html
