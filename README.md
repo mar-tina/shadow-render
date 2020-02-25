@@ -225,7 +225,7 @@ Example App:
 
 - [:white_check_mark:] Handling re-rendering of the component.
 
-- [:hourglass:] Handling props being passed down from the parent
+- [:white_check_mark:] Passing data across components
 
 - [:white_check_mark:] Example App
 
