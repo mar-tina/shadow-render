@@ -8,6 +8,7 @@ interacting with HTMLElement Class.
 
 ### For a more structured usage tutorial . Look at the classic [todo-app](https://github.com/mar-tina/shadow-render/tree/master/examples)
 
+
 [Click here](https://mar-tina.github.io/todo-sample-app/) For live app
 
 [Repository](https://github.com/mar-tina/todo-sample-app) for the live app
@@ -226,9 +227,14 @@ Compared to passing down props to child elements providers provide global access
 It uses the pub sub model where other elements sub and get the returned data or side effects from the
 element that published the data.
 
-**Caveat** The subscribers can change the data
+**Caveat:** The subscribers can change the data.
 
 The contex providers have 2 methods:
+
+```
+  contextProvider.addNewContext(arg1, arg2);
+```
+
 
 ```
   contextProvider.addNewContext(arg1, arg2);
@@ -260,17 +266,10 @@ runs in the context provider
   }
 ```
 
-Full implementation of the todo app in the examples that will give a better perspective on how
+Full implementation of the todo app [here](https://github.com/mar-tina/todo-sample-app) that will give a better perspective on how
 the toolkit works.
 
 You now have a basic app structure setup :tada:
-
-
-Example App:
------------- |
-<img src="https://github.com/mar-tina/shadow-render/blob/master/examples/todoapp.png" alt="todo app" height="500px"> |
-
-
 
 ### TODO:
 
@@ -288,3 +287,6 @@ Example App:
 
 - [:white_check_mark:] Example App
 
+## KEYWORDS
+
+template shadow-dom HTMLElement
