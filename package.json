@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/mar-tina/shadow-render"
   },
+  "homepage": "https://github.com/mar-tina/shadow-render",
   "license": "ISC",
   "keywords": [
     "shadow dom",
@@ -14,7 +15,8 @@
   ],
   "scripts": {
     "build": "webpack",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "deploy": "gh-pages -d sample"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -27,6 +29,7 @@
     "babel-loader": "^8.0.6",
     "babel-preset-stage-2": "^6.24.1",
     "cypress": "^4.0.2",
+    "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^3.2.0",
     "text-encoding": "^0.7.0",
     "webpack": "^4.29.4",

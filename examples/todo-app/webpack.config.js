@@ -5,7 +5,7 @@ const webpack = require("webpack");
 module.exports = {
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "../../docs"),
+    path: path.resolve(__dirname, "../../sample"),
     filename: "index.js"
   },
   mode: "production",
