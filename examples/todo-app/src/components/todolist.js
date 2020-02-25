@@ -1,4 +1,4 @@
-import { html, createShadowElement } from "../../../../src/core.js";
+import { html, createShadowElement } from "shadow-render";
 import { todoItems, todoItem } from "./appStyle.js";
 import { sanitize } from "./utils.js";
 
@@ -29,6 +29,11 @@ let TodoList = createShadowElement({
       args.ctx.state.proxyObject.todos = newTodos;
     },
     handleEdit: (e, args) => {
+      args.ctx.state.todos.map(item => {
+        if (item.id === args.bound) {
+          item.name = sanitize(e.target.innerText);
+        }
+      });
       args.ctx.state.proxyObject.todos.map(item => {
         if (item.id === args.bound) {
           item.name = sanitize(e.target.innerText);

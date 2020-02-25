@@ -20,6 +20,6 @@
     "webpack-dev-server": "^3.1.0"
   },
   "dependencies": {
-    "shadow-render": "^0.4.0"
+    "shadow-render": "^0.5.0"
   }
 }

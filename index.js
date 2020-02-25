@@ -438,11 +438,13 @@ var Shadow;
       };
 
       ContextProvider.prototype.subToContext = function (label, callback) {
+        var self = this;
+
         if (!this.providers["".concat(label)]) {
           throw new Error("Provider does not exist");
         } else {
           this.providers["".concat(label)].subs.push(callback);
-          return "Successfully subbed to context";
+          return self;
         }
       };
 
@@ -453,9 +455,9 @@ var Shadow;
   })(Shadow.Base || (Shadow.Base = {}));
 })(Shadow || (Shadow = {}));
 
+var globalProvider = Shadow.Base.ContextProvider;
 var createShadowElement = function createShadowElement(args) {
-  var newProvider = Shadow.Base.ContextProvider;
-  var newClass = new Shadow.Base.BaseElement.prototype.clone(args, newProvider);
+  var newClass = new Shadow.Base.BaseElement.prototype.clone(args, globalProvider);
   return newClass;
 };
 

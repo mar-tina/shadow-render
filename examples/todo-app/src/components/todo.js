@@ -1,4 +1,4 @@
-import { html, createShadowElement } from "../../../../src/core.js";
+import { html, createShadowElement } from "shadow-render";
 import { mainContainer, submitButton, inputTodo } from "./appStyle.js";
 import { sanitize } from "./utils.js";
 import "./todolist.js";
