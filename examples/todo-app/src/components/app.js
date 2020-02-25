@@ -1,12 +1,5 @@
 import { html, createShadowElement } from "../../../../src/core.js";
-import {
-  todoItem,
-  mainContainer,
-  submitButton,
-  inputTodo,
-  todoItems
-} from "./appStyle.js";
-import { sanitize } from "./utils.js";
+import { mainContainer } from "./appStyle.js";
 import "./todolist.js";
 import "./todo.js";
 

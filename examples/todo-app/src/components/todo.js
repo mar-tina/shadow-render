@@ -1,17 +1,11 @@
 import { html, createShadowElement } from "../../../../src/core.js";
-import {
-  todoItem,
-  mainContainer,
-  submitButton,
-  inputTodo,
-  todoItems
-} from "./appStyle.js";
+import { mainContainer, submitButton, inputTodo } from "./appStyle.js";
 import { sanitize } from "./utils.js";
 import "./todolist.js";
 
 let TodoApp = createShadowElement({
   state: {
-    todos: [],
+    todos: []
   },
 
   lifecycle: {
@@ -36,7 +30,7 @@ let TodoApp = createShadowElement({
     handleBtnClick: (e, args) => {
       args.ctx.state.todos = [...args.ctx.state.todos, args.ctx.state.todo];
       args.ctx.state.proxyObject.todos = args.ctx.state.todos;
-    },
+    }
   },
 
   actions: {
