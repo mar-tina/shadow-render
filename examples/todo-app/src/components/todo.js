@@ -28,8 +28,8 @@ let TodoApp = createShadowElement({
     },
 
     handleBtnClick: (e, args) => {
-      args.ctx.state.todos = [...args.ctx.state.todos, args.ctx.state.todo];
-      args.ctx.state.proxyObject.todos = args.ctx.state.todos;
+      let newTodos = [...args.ctx.state.proxyObject.todos, args.ctx.state.todo];
+      args.ctx.state.proxyObject.todos = newTodos;
     }
   },
 
