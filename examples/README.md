@@ -385,5 +385,9 @@ Example App:
 ------------ |
 <img src="https://github.com/mar-tina/shadow-render/blob/master/screenshots/todo.gif" alt="todo app" height="500px"> | 
 
+Example App:
+------------ |
+<img src="https://github.com/mar-tina/shadow-render/blob/master/screenshots/todoapp.png" alt="todo app" height="500px"> | 
+
 
 Feel Free to submit issues and add your own features to the example app and to the toolkit. :tada:
