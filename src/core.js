@@ -37,7 +37,6 @@ function is_all_ws(nod) {
   // Use ECMA-262 Edition 3 String and RegExp features
   return !/[^\t\n\r ]/.test(nod.textContent);
 }
-
 /**
  * Passes the 'this' object to all the executing functions when node is mounted or unmounted
  * @param {THIS} elem - object that has reference to the current execution context
@@ -57,7 +56,7 @@ export let Shadow;
   (function(Base) {
     let BaseElement = (function() {
       function BaseElement() {}
-      BaseElement.prototype.clone = function(args) {
+      BaseElement.prototype.clone = function(args, provider) {
         let clone = class extends HTMLElement {
           connectedCallback() {
             bindCycle(this, args.lifecycle.onMount);
@@ -66,8 +65,11 @@ export let Shadow;
             super();
             this.state = args.state;
             this.methods = args.methods;
+            this.actions = args.actions;
+            this.provider = provider;
+
             this.nestedNodes = {
-              attrNodes: [],
+              attrNodes: []
             };
 
             this.renderTemplate = document.createElement("template");
@@ -129,6 +131,7 @@ export let Shadow;
             tempDiv.appendChild(cloned);
 
             this._shadowRoot.appendChild(tempDiv.cloneNode(true));
+            //set attributes after elements are mounted to DOM
             this._handleAttributes(this._shadowRoot.childNodes[0].childNodes);
           }
 
@@ -187,11 +190,62 @@ export let Shadow;
       return BaseElement;
     })();
     Base.BaseElement = BaseElement;
+
+    let ContextProvider = (function() {
+      function ContextProvider() {
+        this.providers = {};
+      }
+
+      ContextProvider.prototype.addNewContext = function(label, data) {
+        if (!this.providers.hasOwnProperty(label)) {
+          this.providers[`${label}`] = {};
+        }
+
+        let self = this.providers[`${label}`];
+
+        self.data = data;
+        self.subs = [];
+        const handler = {
+          get(target, property, receiver) {
+            self.subs.forEach(item => {
+              if (item.listenOn === "get") {
+                item.f(target[property]);
+              }
+            });
+            return Reflect.get(target, property, receiver);
+          },
+
+          set(target, property, value, receiver) {
+            self.subs.forEach(item => {
+              if (item.listenOn === "set") {
+                item.f(target[property]);
+              }
+            });
+            return Reflect.set(target, property, value);
+          }
+        };
+        self.proxyObject = new Proxy(self.data, handler);
+        return self;
+      };
+
+      ContextProvider.prototype.subToContext = function(label, callback) {
+        if (!this.providers[`${label}`]) {
+          throw new Error("Provider does not exist");
+        } else {
+          this.providers[`${label}`].subs.push(callback);
+          return "Successfully subbed to context";
+        }
+      };
+
+      return ContextProvider;
+    })();
+
+    Base.ContextProvider = new ContextProvider();
   })(Shadow.Base || (Shadow.Base = {}));
 })(Shadow || (Shadow = {}));
 
 export let createShadowElement = args => {
-  let newClass = new Shadow.Base.BaseElement.prototype.clone(args);
-
+  let newProvider = Shadow.Base.ContextProvider;
+  let newClass = new Shadow.Base.BaseElement.prototype.clone(args, newProvider);
   return newClass;
 };
