@@ -15,8 +15,7 @@
   ],
   "scripts": {
     "build": "webpack",
-    "cypress:open": "cypress open",
-    "deploy": "gh-pages -d sample"
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
