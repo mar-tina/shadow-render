@@ -200,28 +200,27 @@ export let Shadow;
         if (!this.providers.hasOwnProperty(label)) {
           this.providers[`${label}`] = {};
         }
-
         let self = this.providers[`${label}`];
-
         self.data = data;
         self.subs = [];
         const handler = {
           get(target, property, receiver) {
             self.subs.forEach(item => {
               if (item.listenOn === "get") {
-                item.f(target[property]);
+                item.f(property, target[property]);
               }
             });
             return Reflect.get(target, property, receiver);
           },
 
           set(target, property, value, receiver) {
+            let setResult = Reflect.set(target, property, value);
             self.subs.forEach(item => {
               if (item.listenOn === "set") {
-                item.f(target[property]);
+                item.f(property, target[property]);
               }
             });
-            return Reflect.set(target, property, value);
+            return setResult;
           }
         };
         self.proxyObject = new Proxy(self.data, handler);
