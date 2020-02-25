@@ -282,6 +282,3 @@ Example App:
 
 - [:white_check_mark:] Example App
 
-## KEYWORDS
-
-template shadow-dom HTMLElement
