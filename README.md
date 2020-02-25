@@ -11,7 +11,7 @@ interacting with HTMLElement Class.
 
 [Click here](https://mar-tina.github.io/todo-sample-app/) For live app
 
-[Repository](https://github.com/mar-tina/todo-sample-app) for the live app
+[Repository](https://github.com/mar-tina/todo-sample-app) for the live app . For the source checkout master branch
 
 ### Installation
 
