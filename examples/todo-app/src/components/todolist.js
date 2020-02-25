@@ -1,5 +1,6 @@
 import { html, createShadowElement } from "../../../../src/core.js";
 import { todoItems, todoItem } from "./appStyle.js";
+import { sanitize } from "./utils.js";
 
 let TodoList = createShadowElement({
   state: {
@@ -7,7 +8,8 @@ let TodoList = createShadowElement({
   },
   lifecycle: {
     onMount: ctx => {
-      ctx.actions.subscribe(ctx, ctx.provider);
+      let res = ctx.actions.subscribe(ctx, ctx.provider);
+      ctx.state.proxyObject = res.providers["todoCtx"].proxyObject;
     }
   },
   methods: {
@@ -18,20 +20,16 @@ let TodoList = createShadowElement({
         }
       });
 
-      args.ctx.setState({
-        todos: args.ctx.state.todos
-      });
+      args.ctx.state.proxyObject.todos = args.ctx.state.todos;
     },
     deleteTodo: (e, args) => {
       let newTodos = args.ctx.state.todos.filter(
         item => item.id !== args.bound
       );
-      args.ctx.setState({
-        todos: newTodos
-      });
+      args.ctx.state.proxyObject.todos = newTodos;
     },
     handleEdit: (e, args) => {
-      args.ctx.state.todos.map(item => {
+      args.ctx.state.proxyObject.todos.map(item => {
         if (item.id === args.bound) {
           item.name = sanitize(e.target.innerText);
         }
@@ -44,9 +42,11 @@ let TodoList = createShadowElement({
       let callback = {
         listenOn: "set",
         f: (property, args) => {
-          self.setState({
-            todos: args
-          });
+          if (property === "todos") {
+            self.setState({
+              todos: args
+            });
+          }
         }
       };
       try {
