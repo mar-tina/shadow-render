@@ -1,4 +1,4 @@
-import { html, createShadowElement } from "shadow-render";
+import { html, createShadowElement } from "../../../../index.js";
 import { todoItems, todoItem } from "./appStyle.js";
 import { sanitize } from "./utils.js";
 

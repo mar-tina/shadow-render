@@ -1,7 +1,8 @@
-import { html, createShadowElement } from "shadow-render";
+import { html, createShadowElement } from "../../../../index.js";
 import { mainContainer } from "./appStyle.js";
 import "./todolist.js";
 import "./todo.js";
+// import "./counter.js";
 
 let Myapp = createShadowElement({
   lifecycle: {

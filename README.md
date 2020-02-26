@@ -8,20 +8,15 @@ interacting with HTMLElement Class.
 
 ### For a more structured usage tutorial . Look at the classic [todo-app](https://github.com/mar-tina/shadow-render/tree/master/examples)
 
+[Click here](https://mar-tina.github.io/todo-sample-app/) to see a live example app.
 
-[Click here](https://mar-tina.github.io/todo-sample-app/) For live app
-
-[Repository](https://github.com/mar-tina/todo-sample-app) for the live app . For the source checkout master branch
+[Repository link](https://github.com/mar-tina/todo-sample-app) . to the source for the live example app checkout the master branch.
 
 ### Installation
-
-#### Using npm package manager
 
 ```
   npm install shadow-render
 ```
-
-#### Using yarn
 
 ```
   yarn add shadow-render
@@ -33,29 +28,50 @@ You can clone the repo as a template directly on Github and create a new repo in
 
 Clone the template repo [template repo](https://github.com/mar-tina/shadow-render-template)
 
-```
-  git clone https://github.com/mar-tina/shadow-render-template.git
-```
-
-Remove the origin
-
-```
-  git remote remove origin
-```
-
-Set your own origin
-
-```
-  git remote set-url origin [your-repo]
-```
-
-Check if the remote is set
-
-```
-  git remote -v
-```
-
 ### USAGE:
+
+Here is an example counter-app to illustrate simple usage like method calls and binding to event listeners
+
+```
+  import { html, createShadowElement } from "../../../../dist/core.min.js";
+
+  let CounterApp = createShadowElement({
+    state: {
+      counter: 0
+    },
+
+    lifecycle: {
+      onMount: () => {
+        console.log("Counter mounted");
+      }
+    },
+
+    methods: {
+      increment: (e, args) => {
+        args.ctx.setState({
+          counter: (args.ctx.state.counter += 1)
+        });
+      },
+
+      decrement: (e, args) => {
+        args.ctx.setState({
+          counter: (args.ctx.state.counter -= 1)
+        });
+      }
+    },
+
+    template: ctx => {
+      return html(`
+              <p> ${ctx.state.counter}</p>
+              <button default="${true}" id="increment-counter" @onclick="increment"> + </button>
+              <button default="${true}" id="decrement-counter" @onclick="decrement"> - </button>
+          `);
+    }
+});
+
+customElements.define("counter-app", CounterApp);
+
+```
 
 #### Initializing the application.
 
@@ -70,7 +86,7 @@ To initialize the application . The toolkit provides an init function that requi
 
     let newtemplate = html(
       ` ...
-          <my-app> </my-app>
+          <counter-app> </counter-app>
         ...
       `
     );
@@ -87,25 +103,6 @@ Create a new shadow element by importing the `createShadowElement` function from
 Code example below illustrates how to read state. The template object as a default has the ctx passed in
 as a param when app is being instantiated . The ctx avails the state object to the template object
 
-```
-   import { html, createShadowElement } from "shadow-render";
-
-   let MyApp = createShadowElement({
-      state: {},
-
-      methods: {},
-
-      template: ctx => {
-        return html(`
-            <div> New Template </div>
-         `)
-      }
-   })
-
-   customElements.define("my-app", MyApp)
-
-```
-
 #### Adding event handlers.
 
 **IMPORTANT** ALL the elements with an event listener must have an id attribute
@@ -115,7 +112,7 @@ as a param when app is being instantiated . The ctx avails the state object to t
 Prepend the event to bind to with an '@'.
 
 ```
-  <button @onclick="methodToCall"> Click me </button>
+  <button id="click-me" @onclick="methodToCall"> Click me </button>
 ```
 
 The methods are provided the event object and an args object by default and get 'undefined' if any of the
@@ -133,58 +130,10 @@ The available events that can be bound to the HTML elements are the ones availab
 
 The `default` attribute indicates whether to run `e.preventDefault()` .
 
-```
-   ...
-    methods: {
-      handleClick: (e, args) => {
-        console.log("Been clicked", e, args.ctx);
-      }
-    },
-
-    template: ctx => {
-      html(`
-        <div @onclick="handleClick" default=${false} id="main-app">
-          Illustrate onclick event
-        </div>
-      `)
-    }
-  ...
-```
-
 #### SetState
 
-SetState updates the state and re-renders the component. The current implementation performs poorly as more
-elements are added to the screen and depending on how fast the elements are being rendered the performance
-degrades.
-
-```
-    ...
-    methods: {
-      ...
-      handleBtnClick: (e, args) => {
-      args.ctx.setState({
-        todos: [...ctx.state.todos, { name: "new todo", id: "new-one" }]
-      });
-    }
-    }
-
-    template: ctx => {
-      html(`
-        <div @onclick="handleClick" default=${false} id="main-app">
-          Inside main app ${ctx.state.name}</div>
-
-        <button @onclick="handleBtnClick" id="state-change"> State Change </button>
-      `)
-    }
-  ...
-```
-
-There are times where you would prefer to set state but not re-render the app. For example when you are
-handling input . In this instance you can set the state directly as illustrated in the example todo-app in the
+SetState updates the state and re-renders the component.There are times where you would prefer to set state but not re-render the app. For example when you are handling input . In this instance you can set the state directly as illustrated in the example todo-app in the
 examples directory and snippet below
-
-The execution context is only available inside the provided objects ['methods', 'lifecycle', 'template'] .
-Future implementation for ['actions']
 
 ```
   ...
@@ -194,6 +143,8 @@ Future implementation for ['actions']
     };
   ...
 ```
+
+The execution context is only available inside the provided objects ['methods', 'lifecycle', 'template', 'actions' ] .
 
 ##### Working with actions
 
@@ -235,22 +186,21 @@ The contex providers have 2 methods:
   contextProvider.addNewContext(arg1, arg2);
 ```
 
-
 ```
   contextProvider.addNewContext(arg1, arg2);
 ```
 
-``` arg1 - The name of the new context to be added. ```
+`arg1 - The name of the new context to be added.`
 
-``` arg2 - The object to be watched by the context. ```
+`arg2 - The object to be watched by the context.`
 
 ```
   contextProvider.subToContext(arg1, arg2)
 ```
 
-``` arg1 - name of the context to sub to. ```
+`arg1 - name of the context to sub to.`
 
-``` arg2 - the callback ```
+`arg2 - the callback`
 
 The structure of the callback is important. It has to have a `listenOn` attribute and the callback function.
 The callback function is passed back in 2 values, The property name that was changed and it's current value.
@@ -265,11 +215,6 @@ runs in the context provider
     }
   }
 ```
-
-Full implementation of the todo app [here](https://github.com/mar-tina/todo-sample-app) that will give a better perspective on how
-the toolkit works.
-
-You now have a basic app structure setup :tada:
 
 ### TODO:
 
@@ -286,7 +231,3 @@ You now have a basic app structure setup :tada:
 - [:white_check_mark:] Passing data across components
 
 - [:white_check_mark:] Example App
-
-## KEYWORDS
-
-template shadow-dom HTMLElement
