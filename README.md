@@ -24,8 +24,6 @@ interacting with HTMLElement Class.
 
 #### Using the template
 
-You can clone the repo as a template directly on Github and create a new repo in your account or:
-
 Clone the template repo [template repo](https://github.com/mar-tina/shadow-render-template)
 
 ### USAGE:
