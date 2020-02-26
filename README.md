@@ -32,7 +32,7 @@ Clone the template repo [template repo](https://github.com/mar-tina/shadow-rende
 
 Here is an example counter-app to illustrate simple usage like method calls and binding to event listeners
 
-```
+```javascript
   import { html, createShadowElement } from "shadow-render";
 
   let CounterApp = createShadowElement({
@@ -80,7 +80,7 @@ To initialize the application . The toolkit provides an init function that requi
 - [id] The div to bind to in index.html
 - [template] The result of calling the html `parser` provided by the toolkit
 
-```
+```javascript
     import { init, html } from "shadow-render";
     import "./components/app.js";
 
@@ -135,7 +135,7 @@ The `default` attribute indicates whether to run `e.preventDefault()` .
 SetState updates the state and re-renders the component.There are times where you would prefer to set state but not re-render the app. For example when you are handling input . In this instance you can set the state directly as illustrated in the example todo-app in the
 examples directory and snippet below
 
-```
+```javascript
   ...
     args.ctx.state.todo = {
         name: e.target.value, <--
@@ -152,7 +152,7 @@ For example if you want to subscribe to a given context. They work on the same f
 your actions and then call them passing in the necessarry arguments. The contextProvider will be explained in the
 next section.
 
-```
+```javascript
   actions: {
     subscribe: (self, contextProvider) => {
       let callback = {
@@ -207,7 +207,7 @@ The callback function is passed back in 2 values, The property name that was cha
 The `listenOn` attribute listens to either `set` or `get` calls on the object being watched by the proxy that
 runs in the context provider
 
-```
+```javascript
   callback = {
     listenOn: "set"
     f: (property, args) => {
