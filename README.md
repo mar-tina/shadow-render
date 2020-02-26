@@ -33,7 +33,7 @@ Clone the template repo [template repo](https://github.com/mar-tina/shadow-rende
 Here is an example counter-app to illustrate simple usage like method calls and binding to event listeners
 
 ```
-  import { html, createShadowElement } from "../../../../dist/core.min.js";
+  import { html, createShadowElement } from "shadow-render";
 
   let CounterApp = createShadowElement({
     state: {
