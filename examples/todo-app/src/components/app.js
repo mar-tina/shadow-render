@@ -10,18 +10,29 @@ let Myapp = createShadowElement({
   },
 
   lifecycle: {
-    onMount: () => {
-      console.log("Mounted App");
+    onMount: ctx => {
+      let res = ctx.actions.publish(ctx, ctx.provider);
+      ctx.state.proxyObject = res.proxyObject;
     }
   },
 
   methods: {
     linkme: (e, args) => {
-      window.location.hash = args.bound.substr(1);
+      if (!!args.bound) {
+        window.location.hash = args.bound.substr(1);
+      }
       //We just need to trigger a re-render
       args.ctx.setState({
         currentpath: window.location.hash
       });
+    }
+  },
+  actions: {
+    publish: (self, ctxProvider) => {
+      let props = {
+        todos: []
+      };
+      return ctxProvider.addNewContext("todoCtx", props);
     }
   },
 

@@ -52,13 +52,15 @@ function renderIfPathMatched(e, args) {
 }
 
 function matchPathToWindowLocation(ctx, path, location) {
-  path = path.substr(1);
-  if (path === location) {
-    ctx._render();
-    return true;
+  if (path !== undefined) {
+    path = path.substr(1);
+    if (path === location) {
+      ctx._render();
+      return true;
+    }
+    ctx._shadowRoot.innerHTML = "";
+    return false;
   }
-  ctx._shadowRoot.innerHTML = "";
-  return false;
 }
 /**
  * Passes the 'this' object to all the executing functions when node is mounted or unmounted
