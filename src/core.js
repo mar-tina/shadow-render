@@ -25,9 +25,18 @@ export let init = function(selector, component, doc) {
 
 let addListener = (type, elem, f, args) => {
   elem[`${type}`] = e => {
-    if (args.defaultAction === "true") {
-      e.preventDefault();
+    if (typeof args !== undefined) {
+      if (args.defaultAction === "true") {
+        e.preventDefault();
+      }
     }
+    f(e, args);
+  };
+};
+
+let addWindowListener = (type, elem, f, args) => {
+  elem[`${type}`] = e => {
+    args.location = elem.location.hash;
     f(e, args);
   };
 };
@@ -36,6 +45,20 @@ let addListener = (type, elem, f, args) => {
 function is_all_ws(nod) {
   // Use ECMA-262 Edition 3 String and RegExp features
   return !/[^\t\n\r ]/.test(nod.textContent);
+}
+
+function renderIfPathMatched(e, args) {
+  matchPathToWindowLocation(args.ctx, args.path, args.location);
+}
+
+function matchPathToWindowLocation(ctx, path, location) {
+  path = path.substr(1);
+  if (path === location) {
+    ctx._render();
+    return true;
+  }
+  ctx._shadowRoot.innerHTML = "";
+  return false;
 }
 /**
  * Passes the 'this' object to all the executing functions when node is mounted or unmounted
@@ -78,7 +101,33 @@ export let Shadow;
               mode: "open"
             });
 
-            this._render();
+            //clone the window object
+            this.localWindow = window;
+
+            this.path = this.getAttribute("path");
+            this.type = this.getAttribute("type");
+
+            let pathArgs = {
+              ctx: this,
+              path: this.path,
+              location: this.localWindow.location.hash
+            };
+
+            if (this.type !== undefined && this.type === "router") {
+              matchPathToWindowLocation(
+                this,
+                this.path,
+                this.localWindow.location.hash
+              );
+            } else {
+              this._render();
+            }
+            addWindowListener(
+              "onpopstate",
+              this.localWindow,
+              renderIfPathMatched,
+              pathArgs
+            );
           }
 
           setState(props) {
@@ -87,19 +136,16 @@ export let Shadow;
                 this.state[key] = props[key];
               }
             }
-
             var i = 0;
             for (; i < this._shadowRoot.childNodes.length; ) {
               this._shadowRoot.removeChild(this.shadowRoot.childNodes[i]);
               i = +1;
             }
-
             this._render();
           }
 
           clean(node) {
             var i = 0;
-
             for (; i < node.childNodes.length; ) {
               if (
                 node.childNodes[i].nodeType === 8 ||
@@ -112,7 +158,6 @@ export let Shadow;
               }
               i += 1;
             }
-
             return node;
           }
 
@@ -129,7 +174,6 @@ export let Shadow;
             );
 
             tempDiv.appendChild(cloned);
-
             this._shadowRoot.appendChild(tempDiv.cloneNode(true));
             //set attributes after elements are mounted to DOM
             this._handleAttributes(this._shadowRoot.childNodes[0].childNodes);
@@ -142,7 +186,6 @@ export let Shadow;
             attrArray.map(attr => {
               allattributes.set(`${attr.nodeName}`, `${attr.nodeValue}`);
             }, "");
-
             let component = this._shadowRoot.getElementById(
               allattributes.get("id")
             );
@@ -163,11 +206,9 @@ export let Shadow;
             for (var node of newTemplate) {
               this.recursivelyCheckForNodes(node, "attrNodes");
             }
-
             let filteredNodes = this.nestedNodes[`attrNodes`].filter(
               elem => elem.id !== undefined && elem.id !== ""
             );
-
             //empty nested nodes after every page refresh
             this.nestedNodes[`attrNodes`] = [];
             filteredNodes.forEach(this.setPassedAttribute);
@@ -184,7 +225,6 @@ export let Shadow;
             }
           };
         };
-
         return clone;
       };
       return BaseElement;
@@ -236,7 +276,6 @@ export let Shadow;
           return self;
         }
       };
-
       return ContextProvider;
     })();
 
