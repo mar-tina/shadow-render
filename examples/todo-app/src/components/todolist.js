@@ -63,7 +63,7 @@ let TodoList = createShadowElement({
   },
   template: ctx => {
     return html(`
-            <div style="text-align:center;"> All the todos </div>
+            <div style="text-align:center; padding: 10px;"> All the todos </div>
             <div style="${todoItems}" id="todoList"> ${todoList(
       ctx.state
     )} </div>

@@ -10,8 +10,8 @@ let TodoApp = createShadowElement({
 
   lifecycle: {
     onMount: ctx => {
-      let res = ctx.actions.publish(ctx, ctx.provider);
-      ctx.state.proxyObject = res.proxyObject;
+      let res = ctx.actions.subscribe(ctx, ctx.provider);
+      ctx.state.proxyObject = res.providers["todoCtx"].proxyObject;
     }
   },
 
@@ -34,17 +34,29 @@ let TodoApp = createShadowElement({
   },
 
   actions: {
-    publish: (self, ctxProvider) => {
-      let props = {
-        todos: []
+    subscribe: (self, contextProvider) => {
+      let callback = {
+        listenOn: "set",
+        f: (property, args) => {
+          if (property === "todos") {
+            self.setState({
+              todos: args
+            });
+          }
+        }
       };
-      return ctxProvider.addNewContext("todoCtx", props);
+      try {
+        return contextProvider.subToContext("todoCtx", callback);
+      } catch (error) {
+        console.log("Failed", error);
+      }
     }
   },
 
   template: ctx => {
     return html(`
         <div style="${mainContainer}">
+        <p> Add a Todo </p>
         <input style="${inputTodo}" id="todo-input" @oninput="handleInput" /> 
           <div> 
             <button style="${submitButton}" id="state-change" @onclick="handleBtnClick" > Submit Todo </button>

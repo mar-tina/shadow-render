@@ -33,3 +33,10 @@ export let todoItems = `
     display: grid;
     grid-gap: 15px;
 `;
+
+export let routeComponent = `
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    padding: 20px;
+`;
