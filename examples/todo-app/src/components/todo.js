@@ -45,6 +45,7 @@ let TodoApp = createShadowElement({
   template: ctx => {
     return html(`
         <div style="${mainContainer}">
+        <p> Add a Todo </p>
         <input style="${inputTodo}" id="todo-input" @oninput="handleInput" /> 
           <div> 
             <button style="${submitButton}" id="state-change" @onclick="handleBtnClick" > Submit Todo </button>
