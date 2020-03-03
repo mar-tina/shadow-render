@@ -23,6 +23,13 @@ export let init = function(selector, component, doc) {
   el.shadowRoot.appendChild(component);
 };
 
+/**
+ *  Add listener to elements
+ * @param {*} type - The type of event to listen to
+ * @param {*} elem  - The element that the listener is being added to
+ * @param {*} f - the callback function to run when the event is fired on the element
+ * @param {*} args - The arguments being passed to the callback function. The args object contains the 'self' -- current execution ctx
+ */
 let addListener = (type, elem, f, args) => {
   elem[`${type}`] = e => {
     if (typeof args !== undefined) {
@@ -34,6 +41,13 @@ let addListener = (type, elem, f, args) => {
   };
 };
 
+/**
+ * Same as the above addListener but specifically for the global window object
+ * @param {*} type
+ * @param {*} elem
+ * @param {*} f
+ * @param {*} args
+ */
 let addWindowListener = (type, elem, f, args) => {
   elem[`${type}`] = e => {
     args.location = elem.location.hash;
@@ -47,10 +61,21 @@ function is_all_ws(nod) {
   return !/[^\t\n\r ]/.test(nod.textContent);
 }
 
+/**
+ *
+ * @param {*} e - listener passed to the addWindowListener function. calls the matchPathToWindowLocation
+ * @param {*} args - Contains the 'self', path , and location parameters
+ */
 function renderIfPathMatched(e, args) {
   matchPathToWindowLocation(args.ctx, args.path, args.location);
 }
 
+/**
+ * It matches the current router element path and renders if it matches the global window.location.hash
+ * @param {*} ctx - 'self' - current execution context
+ * @param {*} path - the path that the current element is supposed to match to trigger render
+ * @param {*} location - the global window.location.hash
+ */
 function matchPathToWindowLocation(ctx, path, location) {
   if (path !== undefined) {
     path = path.substr(1);
@@ -138,6 +163,7 @@ export let Shadow;
                 this.state[key] = props[key];
               }
             }
+            // clears the current element content and rerenders it afresh with new state variables
             var i = 0;
             for (; i < this._shadowRoot.childNodes.length; ) {
               this._shadowRoot.removeChild(this.shadowRoot.childNodes[i]);
@@ -146,6 +172,7 @@ export let Shadow;
             this._render();
           }
 
+          // clean function removes whitespace in the element and unnecessary characters
           clean(node) {
             var i = 0;
             for (; i < node.childNodes.length; ) {
@@ -163,7 +190,9 @@ export let Shadow;
             return node;
           }
 
+          // Renders the actual element
           _render() {
+            // creates a new template and passes it the 'ctx' object == 'this'
             let newTemplate = args.template(this);
             let tempDiv = document.createElement("div");
 
@@ -181,6 +210,7 @@ export let Shadow;
             this._handleAttributes(this._shadowRoot.childNodes[0].childNodes);
           }
 
+          // calls the addEventListener for the attributes
           setPassedAttribute = item => {
             let attrArray = Array.from(item.attributes);
 
@@ -193,6 +223,7 @@ export let Shadow;
             );
 
             for (let [key, value] of allattributes.entries()) {
+              // only runs add  listener on attributes that are prepended by '@'
               if (key.startsWith("@")) {
                 key = key.substr(1);
                 addListener(`${key}`, component, this.methods[`${value}`], {
@@ -208,6 +239,8 @@ export let Shadow;
             for (var node of newTemplate) {
               this.recursivelyCheckForNodes(node, "attrNodes");
             }
+            // Because as a rule all elements with event listeners must have an id. It only sets the Listener attribute
+            // on the nested nodes that have an id attribute
             let filteredNodes = this.nestedNodes[`attrNodes`].filter(
               elem => elem.id !== undefined && elem.id !== ""
             );
@@ -216,6 +249,11 @@ export let Shadow;
             filteredNodes.forEach(this.setPassedAttribute);
           }
 
+          /**
+           * Looks through the nodes pressent in the shadow root and creates an object that holds
+           * all nodes so that the handleAttributes element is able to setAttributes for all the available
+           * nested nodes.
+           */
           recursivelyCheckForNodes = (node, type) => {
             if (node.hasChildNodes()) {
               for (var i = 0; i < node.childNodes.length; i++) {
@@ -239,12 +277,15 @@ export let Shadow;
       }
 
       ContextProvider.prototype.addNewContext = function(label, data) {
+        // Checks if the new context exists if not it creates a new empty object to avoid failing
         if (!this.providers.hasOwnProperty(label)) {
           this.providers[`${label}`] = {};
         }
         let self = this.providers[`${label}`];
         self.data = data;
         self.subs = [];
+
+        // Implementation of the Javascript proxy object
         const handler = {
           get(target, property, receiver) {
             self.subs.forEach(item => {
@@ -265,6 +306,9 @@ export let Shadow;
             return setResult;
           }
         };
+
+        // Returns the ctx to the elements calling publish to allow the elements
+        // to manipulate the object being watched.
         self.proxyObject = new Proxy(self.data, handler);
         return self;
       };
@@ -275,6 +319,8 @@ export let Shadow;
           throw new Error("Provider does not exist");
         } else {
           this.providers[`${label}`].subs.push(callback);
+          // Returns the ctx to the elements calling subscribe to allow the elements
+          // to manipulate the object being watched.
           return self;
         }
       };
