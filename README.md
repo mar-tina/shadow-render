@@ -1,7 +1,5 @@
 ### Shadow-Render
 
-### Project Status: EXPERIMENTAL.
-
 An experimental functional web component toolkit that wraps the base HTMLElement class and provides a functional
 interface to interact with web components inspired by vueJS. Aims at providing a simpler interface to
 interacting with HTMLElement Class.
