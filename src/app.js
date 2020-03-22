@@ -1,23 +1,29 @@
-import { Shadow } from "../index.js";
+import { Shadow, useState } from "../index.js";
 import { Home } from "./home.js";
 
 function runme() {
   console.log("Random run me");
 }
 
+let [state, setState] = useState({});
+
 export let App = new Shadow("my-app", {
+  onMount: () => {
+    console.log("Mounted my-app");
+  },
+
   methods: {
-    sayHi: function(e) {
+    sayHi: e => {
       e.preventDefault();
-      //stop propagation
-      // if (e.target.id !== "parent-node") {
-      //   return; // child was clicked, ignore onClick
-      // }
-      runme();
-      console.log("I am saying hi", e);
+      state.name = "update me pls";
+
+      console.log("What is here", state.name);
+      console.log("I am saying hi", state.name);
     },
     no: function() {
-      console.log("I am saying no");
+      state.name = "saying hell no";
+      setState(state);
+      console.log("I am ", state.name);
     },
     mon: function() {
       console.log("I am saying mon");
@@ -25,11 +31,13 @@ export let App = new Shadow("my-app", {
   },
 
   template: /*html*/ `
-    <div  @click="sayHi">
-      Hello 
-    </div>
-    <div @click="mon"> mon </div>
-    <div @click="no"> Non  </div>
-    <home-el> </home-el>
+      <div  @click="sayHi">
+        Hello 
+      </div>
+      <div @click="mon"> mon </div>
+      <div @click="no"> Saying no </div>
+      <div> ${state} </div>
+      <input @bind=${state.name} />
+      <home-el> </home-el>
     `
 });
