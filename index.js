@@ -1,7 +1,12 @@
 const parseRange = document.createRange();
 const parse = Range.prototype.createContextualFragment.bind(parseRange);
 
-export function Ombra(label, args) {
+export let initApp = (id, content, doc) => {
+  let docref = doc.body.querySelector(id);
+  docref.appendChild(content);
+};
+
+export function Shadow(label, args) {
   let parsedTemplate = parse(args.template);
   let VDomNodes = {};
 
@@ -31,14 +36,14 @@ export function Ombra(label, args) {
               let attr;
               !!el ? (attr = el.attributes) : (attr = {});
 
-              for (var key in attr) {
-                if (!!attr[key].nodeName) {
-                  if (attr[key].nodeName.startsWith("@")) {
-                    let f = args.methods[`${attr[key].nodeValue}`];
-                    el.addEventListener(`${attr[key].nodeName.substr(1)}`, e =>
+              for (var prop in attr) {
+                if (!!attr[prop].nodeName) {
+                  if (attr[prop].nodeName.startsWith("@")) {
+                    let f = args.methods[`${attr[prop].nodeValue}`];
+                    el.addEventListener(`${attr[prop].nodeName.substr(1)}`, e =>
                       f(e)
                     );
-                    el.removeAttribute(`${attr[key].nodeName}`);
+                    el.removeAttribute(`${attr[prop].nodeName}`);
                   }
                 }
               }
@@ -51,11 +56,6 @@ export function Ombra(label, args) {
 
   return template;
 }
-
-export let initApp = (id, content, doc) => {
-  let docref = doc.body.querySelector(id);
-  docref.appendChild(content);
-};
 
 function recursivelyCheckForNodes(node, allNodes) {
   let DomNode = {};
@@ -77,8 +77,7 @@ function recursivelyCheckForNodes(node, allNodes) {
 }
 
 /**** HELPERS  *****/
-// A package by: lukeed
-// Github Repository link: https://github.com/lukeed/uid/blob/master/src/index.js
+// A package by: lukeed Github Repository link: https://github.com/lukeed/uid/blob/master/src/index.js
 var IDX = 36,
   HEX = "";
 while (IDX--) HEX += IDX.toString(36);
