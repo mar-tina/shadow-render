@@ -10,7 +10,6 @@ export let initApp = (id, content, doc) => {
 
 export function Shadow(label, args) {
   let VDomNodes = {};
-
   customElements.define(
     label,
     class extends HTMLElement {

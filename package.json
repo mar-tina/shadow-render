@@ -1,0 +1,16 @@
+{
+  "name": "shadow-render",
+  "version": "0.8.0",
+  "author": "mar-tina <marr.tina344@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mar-tina/shadow-render"
+  },
+  "homepage": "https://github.com/mar-tina/shadow-render",
+  "license": "ISC",
+  "keywords": [
+    "shadow dom",
+    "templating",
+    "vanilla js"
+  ]
+}
