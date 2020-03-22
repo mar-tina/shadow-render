@@ -1,43 +1,37 @@
 import { Shadow, useState } from "../index.js";
-import { Home } from "./home.js";
-
-function runme() {
-  console.log("Random run me");
-}
-
-let [state, setState] = useState({});
+import "./home.js";
+import { sanitize } from "./utils.js";
 
 export let App = new Shadow("my-app", {
   onMount: () => {
     console.log("Mounted my-app");
   },
 
+  getInitialProps: self => {
+    return useState({ name: "hi" }, self);
+  },
+
   methods: {
     sayHi: e => {
       e.preventDefault();
-      state.name = "update me pls";
+      console.log("Saying hello");
+    },
 
-      console.log("What is here", state.name);
-      console.log("I am saying hi", state.name);
-    },
-    no: function() {
-      state.name = "saying hell no";
-      setState(state);
-      console.log("I am ", state.name);
-    },
-    mon: function() {
-      console.log("I am saying mon");
+    handleInput: function(e, self) {
+      e.preventDefault();
+      let value = sanitize(e.target.value);
+      self.setState({ name: value });
     }
   },
 
-  template: /*html*/ `
+  template: self => {
+    return /*html*/ `
       <div  @click="sayHi">
         Hello 
       </div>
-      <div @click="mon"> mon </div>
-      <div @click="no"> Saying no </div>
-      <div> ${state} </div>
-      <input @bind=${state.name} />
+      <div @bind="name">  </div>
+      <input @change="handleInput"  />
       <home-el> </home-el>
-    `
+    `;
+  }
 });
