@@ -12,7 +12,4 @@ let Entry = new Shadow("entry-point", {
   `
 });
 
-let entrydiv = document.createElement("div");
-entrydiv.innerHTML = `<div> <div id="my-app"> ${App} </div> </div>`;
-
 initApp("#app", Entry, document);
