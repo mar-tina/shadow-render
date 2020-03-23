@@ -20,14 +20,15 @@ export function Shadow(label, args) {
       }
       constructor() {
         super();
+        this.BindNodes = {};
         this._shadowRoot = this.attachShadow({
           mode: "open"
         });
         this.parsedTemplate = parse(args.template(this));
         this.template = document.createElement("div");
         this.template.appendChild(this.parsedTemplate);
-        !!args.getInitialProps
-          ? ([this.state, this.setState, this.bindState] = args.getInitialProps(
+        !!args.getInitialState
+          ? ([this.state, this.setState, this.bindState] = args.getInitialState(
               this
             ))
           : {};
@@ -56,13 +57,13 @@ export function Shadow(label, args) {
               for (var prop in attr) {
                 if (attr[prop].nodeName != null) {
                   if (attr[prop].nodeName.startsWith("@")) {
-                    attr[prop].nodeName === "@bind"
-                      ? this.bindState(el, attr[prop].nodeValue)
-                      : {};
                     let f = args.methods[`${attr[prop].nodeValue}`];
-                    el.addEventListener(`${attr[prop].nodeName.substr(1)}`, e =>
-                      f(e, this)
-                    );
+                    attr[prop].nodeName === "@bind"
+                      ? setBindNodes(el, attr[prop].nodeValue, this.BindNodes)
+                      : el.addEventListener(
+                          `${attr[prop].nodeName.substr(1)}`,
+                          e => f(e, this)
+                        );
                     // el.removeAttribute(`${attr[prop].nodeName}`);
                   }
                 }
@@ -75,6 +76,22 @@ export function Shadow(label, args) {
   );
 
   return args.template;
+}
+
+/**
+ *
+ * @param {*} node -> The node with the bind attribute
+ * @param {*} stateValue -> The state value the node is bound to
+ * @param {*} bindNodes -> The object holding all the bind nodes
+ */
+function setBindNodes(node, stateValue, bindNodes) {
+  !bindNodes.hasOwnProperty(`${stateValue}`)
+    ? (bindNodes[`${stateValue}`] = {
+        nodes: []
+      })
+    : {};
+
+  bindNodes[`${stateValue}`][`nodes`].push(node);
 }
 
 function recursivelyCheckForNodes(node, allNodes) {
@@ -108,23 +125,32 @@ export function useState(state, ctx) {
     }
   };
   let proxyObject = new Proxy(state, handler);
-
-  let bindState = (target, value) => {
-    console.log("The target", target);
-    proxyObject.state = state;
-    target.innerText = proxyObject.state[`${value}`];
-  };
-
   let setState = createStateHandler(proxyObject, ctx);
-  return [state, setState, bindState];
+  return [state, setState];
 }
 
-let createStateHandler = (proxy, self) => state => {
+let bindState = (target, value) => {
+  target.innerText = value;
+};
+
+/**
+ *
+ * @param {*} proxy -> The proxy object watching state
+ * @param {*} self -> The execution context for the component. 'this'
+ */
+let createStateHandler = (proxy, self) => (state, rerender) => {
   for (var key in proxy) {
     if (state.hasOwnProperty(key)) {
       proxy[key] = state[key];
-      self.clear();
-      self.render();
+      // if rerender is set to true the element is cleared and re-rendered
+      if (rerender) {
+        self.clear();
+        self.render();
+      }
+      // Iterate through bind nodes. If there is a node that is bound to the current changing state execute bindState
+      for (var node in self.BindNodes[`${key}`].nodes) {
+        bindState(self.BindNodes[`${key}`].nodes[node], state[`${key}`]);
+      }
     }
   }
 };
