@@ -9,7 +9,6 @@ export let initApp = (id, content, doc) => {
 };
 
 export function Shadow(label, args) {
-  let VDomNodes = {};
   customElements.define(
     label,
     class extends HTMLElement {
@@ -20,6 +19,7 @@ export function Shadow(label, args) {
       }
       constructor() {
         super();
+        this.VDomNodes = {};
         this.BindNodes = {};
         this._shadowRoot = this.attachShadow({
           mode: "open"
@@ -34,7 +34,7 @@ export function Shadow(label, args) {
 
       render() {
         this._shadowRoot.appendChild(this.template.cloneNode(true));
-        recursivelyCheckForNodes(this._shadowRoot, VDomNodes);
+        recursivelyCheckForNodes(this._shadowRoot, this.VDomNodes);
         this.setAttributes();
       }
 
@@ -45,9 +45,9 @@ export function Shadow(label, args) {
       }
 
       setAttributes() {
-        for (var key in VDomNodes) {
-          if (VDomNodes.hasOwnProperty(key)) {
-            if (VDomNodes[key].parent != undefined) {
+        for (var key in this.VDomNodes) {
+          if (this.VDomNodes.hasOwnProperty(key)) {
+            if (this.VDomNodes[key].parent != undefined) {
               // Get element in template and modify element
               let el = this._shadowRoot.querySelector(`#${key}`);
               let attr;
@@ -146,7 +146,7 @@ let createStateHandler = (proxy, self) => (state, rerender) => {
         self.render();
       }
       //If false. Iterate through bind nodes. If there is a node that is bound to the current changing state execute bindState.
-      //bindState only rerenders the elements bound to the changing state
+      //bindState only rerenders the elements bound to the changing state property.
       for (var node in self.BindNodes[`${key}`].nodes) {
         bindState(self.BindNodes[`${key}`].nodes[node], state[`${key}`]);
       }
