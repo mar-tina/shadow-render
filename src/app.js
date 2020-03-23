@@ -21,6 +21,10 @@ export let App = new Shadow("my-app", {
       e.preventDefault();
       let value = sanitize(e.target.value);
       self.setState({ name: value }, false);
+    },
+
+    handleDefault: function(e, self) {
+      console.log("Handling default");
     }
   },
 
@@ -29,9 +33,8 @@ export let App = new Shadow("my-app", {
       <div  @click="sayHi">
         Hello 
       </div>
-      <div @bind="name"> notdefault </div>
-      <div @bind="name"> default </div>
-      <input @input="handleInput"  />
+      <div @bind="name" @click="handleDefault"> notdefault </div>
+      <input @input="handleInput" />
       <home-el> </home-el>
     `;
   }
