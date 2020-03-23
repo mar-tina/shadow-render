@@ -146,7 +146,7 @@ let createStateHandler = (proxy, self) => (state, rerender) => {
         self.render();
       }
       //If false. Iterate through bind nodes. If there is a node that is bound to the current changing state execute bindState.
-      //bindState only changes the elements bound to the state that is changing
+      //bindState only rerenders the elements bound to the changing state
       for (var node in self.BindNodes[`${key}`].nodes) {
         bindState(self.BindNodes[`${key}`].nodes[node], state[`${key}`]);
       }
