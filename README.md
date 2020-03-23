@@ -104,6 +104,10 @@ let Counter = Shadow("counter-el", {
 
 That is the entirety of a counter app example . You can look through the source file for a better understanding of the toolkit. Currently standing at 180 lines of code.
 
+### Running the app
+
+For testing purposes you can use VS Code live server to run the app or set up the application with webpack.
+
 ### Contributing
 
 Things to note:

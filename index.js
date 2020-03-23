@@ -24,12 +24,12 @@ export function Shadow(label, args) {
         this._shadowRoot = this.attachShadow({
           mode: "open"
         });
-        this.parsedTemplate = parse(args.template(this));
-        this.template = document.createElement("div");
-        this.template.appendChild(this.parsedTemplate);
         !!args.getInitialState
           ? ([this.state, this.setState] = args.getInitialState(this))
           : {};
+        this.parsedTemplate = parse(args.template(this));
+        this.template = document.createElement("div");
+        this.template.appendChild(this.parsedTemplate);
       }
 
       render() {

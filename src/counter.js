@@ -22,7 +22,7 @@ let Counter = Shadow("counter-el", {
     }
   },
   template: self => /*html*/ `
-        <div @bind="counter"> ${state.counter} </div>
+        <div @bind="counter"> ${self.state.counter} </div>
         <button @click="increment">  +  </button>
         <button @click="decrement">  -  </button>
     `
