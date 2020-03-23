@@ -18,7 +18,7 @@ You can use npm and get the latest version that might be a little behind on feat
     npm install shadow-render
     yarn add shadow-render
 
-Full transparency: It does use a dependency. A package called [uid](https://github.com/lukeed/uid). which is approximately 10 lines of code that was pulled in directly into the source file.
+**_For Full transparency_**: It does use a dependency. A package called [uid](https://github.com/lukeed/uid). which is approximately 10 lines of code that was pulled in directly into the source file.
 
 ### How to use
 
