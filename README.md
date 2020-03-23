@@ -63,11 +63,15 @@ let MyApp = new Shadow("my-app", {
 
 Things to note:
 
-- getInitialState has to be called in the exact signature below for it to register state and setState to the component to make them available in 'self'.
+- getInitialState has to be called with the exact signature below for it to register state and setState to the component to make them available in 'self'.
 
-- You can pass in an object external to the component. i.e state is declared outside of Shadow and is passed into the useState function (provided by the toolkit) which then calls a statehandler function that watches and updates the object. The statehandler returns a state object and setState function which are then declared in the component and therefore made available in self.
+- You can pass in an object external to the component. i.e state is declared outside of Shadow and is passed into the useState function (provided by the toolkit) which then calls a statehandler function that watches and updates the object. The statehandler returns a state object and setState function which are then made available in self.
 
-- When calling setState there is an boolean varialble passed in the end that tells the component whether to re-render on state change. If true : component is re-rendered. If false : only the elements bound to the state property that is being changed are re-rendered.
+**Caveat** It becomes a globally available variable . Every similar instance of you component in your app will have a reference to that variable . So if `<counter-el>` one updates counter to 3 `<counter-el>` two picks up where one left off and starts counting from 3.
+
+- When calling `setState()` there is a boolean variable passed in that tells the component whether to re-render on state change. If true : component is re-rendered. If false : only the elements bound to the state property that is being changed are re-rendered.
+
+**NOTE:** This currently only works with very simple variable types -> strings, int, boolean
 
 ```javascript
 import { Shadow, useState } from "../index.js";
