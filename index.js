@@ -28,9 +28,7 @@ export function Shadow(label, args) {
         this.template = document.createElement("div");
         this.template.appendChild(this.parsedTemplate);
         !!args.getInitialState
-          ? ([this.state, this.setState, this.bindState] = args.getInitialState(
-              this
-            ))
+          ? ([this.state, this.setState] = args.getInitialState(this))
           : {};
       }
 
@@ -147,7 +145,8 @@ let createStateHandler = (proxy, self) => (state, rerender) => {
         self.clear();
         self.render();
       }
-      // Iterate through bind nodes. If there is a node that is bound to the current changing state execute bindState
+      //If false. Iterate through bind nodes. If there is a node that is bound to the current changing state execute bindState.
+      //bindState only changes the elements bound to the state that is changing
       for (var node in self.BindNodes[`${key}`].nodes) {
         bindState(self.BindNodes[`${key}`].nodes[node], state[`${key}`]);
       }
