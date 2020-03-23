@@ -106,6 +106,7 @@ dist
 #misc
 public/
 src/
+package.json
 
 #images
 *.gif
