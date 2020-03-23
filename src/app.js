@@ -7,7 +7,7 @@ export let App = new Shadow("my-app", {
     console.log("Mounted my-app");
   },
 
-  getInitialProps: self => {
+  getInitialState: self => {
     return useState({ name: "hi" }, self);
   },
 
@@ -20,7 +20,7 @@ export let App = new Shadow("my-app", {
     handleInput: function(e, self) {
       e.preventDefault();
       let value = sanitize(e.target.value);
-      self.setState({ name: value });
+      self.setState({ name: value }, false);
     }
   },
 
@@ -29,8 +29,9 @@ export let App = new Shadow("my-app", {
       <div  @click="sayHi">
         Hello 
       </div>
-      <div @bind="name">  </div>
-      <input @change="handleInput"  />
+      <div @bind="name"> notdefault </div>
+      <div @bind="name"> default </div>
+      <input @input="handleInput"  />
       <home-el> </home-el>
     `;
   }
