@@ -1,5 +1,6 @@
 import { Shadow, useState } from "../index.js";
 import "./home.js";
+import "./counter.js";
 import { sanitize } from "./utils.js";
 
 export let App = new Shadow("my-app", {
@@ -36,6 +37,8 @@ export let App = new Shadow("my-app", {
       <div @bind="name" @click="handleDefault"> notdefault </div>
       <input @input="handleInput" />
       <home-el> </home-el>
+      <counter-el> </counter-el> 
+
     `;
   }
 });

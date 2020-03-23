@@ -9,7 +9,7 @@ let Counter = Shadow("counter-el", {
     console.log("Mounted counter-app");
   },
   getInitialState: self => {
-    return useState(state, self);
+    return useState({ counter: 0 }, self);
   },
   methods: {
     increment: (e, self) => {
