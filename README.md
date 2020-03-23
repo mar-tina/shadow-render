@@ -67,7 +67,7 @@ Things to note:
 
 - You can pass in an object external to the component. i.e state is declared outside of Shadow and is passed into the useState function (provided by the toolkit) which then calls a statehandler function that watches and updates the object. The statehandler returns a state object and setState function which are then declared in the component and therefore made available in self.
 
-- When calling setState there is an boolean varialble passed in the end that tells the component whether to re-render on state change. If true : component is re-rendered. If false : only the elements bound the the state property that is being changed are re-rendered.
+- When calling setState there is an boolean varialble passed in the end that tells the component whether to re-render on state change. If true : component is re-rendered. If false : only the elements bound to the state property that is being changed are re-rendered.
 
 ```javascript
 import { Shadow, useState } from "../index.js";
