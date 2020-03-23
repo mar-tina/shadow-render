@@ -24,12 +24,6 @@ You can use npm and get the latest version that might be a little behind on feat
 
 - Init the app
 
-The document is being passed in to allow easy mocking for testing purposes i.e
-
-    let doc = document.implementation.createHTMLDocument("New Document");
-
-This creates a HTMLElement document that can be used as the entry point for the toolkit.
-
 ```javascript
 import { Shadow, initApp } from "../index.js";
 
@@ -43,6 +37,12 @@ let Entry = new Shadow("entry-point", {
 
 initApp("#app", Entry, document);
 ```
+
+The document is being passed in to allow easy mocking for testing purposes i.e
+
+    let doc = document.implementation.createHTMLDocument("New Document");
+
+This creates a HTMLElement document that can be used as the entry point for the toolkit.
 
 #### Lets create the `<my-app>` element
 
