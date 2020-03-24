@@ -107,6 +107,7 @@ dist
 public/
 src/
 package.json
+.gitignore
 
 #images
 *.gif
