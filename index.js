@@ -13,8 +13,7 @@ export function Shadow(label, args) {
     label,
     class extends HTMLElement {
       connectedCallback() {
-        !!args.onMount ? args.onMount() : {};
-
+        !!args.onMount ? args.onMount(this) : {};
         this.render();
       }
       constructor() {
@@ -27,21 +26,20 @@ export function Shadow(label, args) {
         !!args.getInitialState
           ? ([this.state, this.setState] = args.getInitialState(this))
           : {};
-        this.parsedTemplate = parse(args.template(this));
-        this.template = document.createElement("div");
-        this.template.appendChild(this.parsedTemplate);
       }
 
       render() {
+        this.parsedTemplate = parse(args.template(this));
+        this.template = document.createElement("div");
+        this.template.appendChild(this.parsedTemplate);
         this._shadowRoot.appendChild(this.template.cloneNode(true));
         recursivelyCheckForNodes(this._shadowRoot, this.VDomNodes);
         this.setAttributes();
       }
 
       clear() {
-        for (var i = 0; i < this._shadowRoot.childNodes.length; i++) {
-          this._shadowRoot.removeChild(this.shadowRoot.childNodes[i]);
-        }
+        console.log("Running clear");
+        this.shadowRoot.innerHTML = "";
       }
 
       setAttributes() {
@@ -132,23 +130,26 @@ let bindState = (target, value) => {
 };
 
 /**
- *
  * @param {*} proxy -> The proxy object watching state
  * @param {*} self -> The execution context for the component. 'this'
  */
 let createStateHandler = (proxy, self) => (state, rerender) => {
+  console.log("Runninf set state", state, rerender);
   for (var key in proxy) {
     if (state.hasOwnProperty(key)) {
       proxy[key] = state[key];
       // if rerender is set to true the element is cleared and re-rendered
       if (rerender) {
+        console.log("Running clear and Re-render");
         self.clear();
         self.render();
       }
-      //If false. Iterate through bind nodes. If there is a node that is bound to the current changing state execute bindState.
-      //bindState only rerenders the elements bound to the changing state property.
-      for (var node in self.BindNodes[`${key}`].nodes) {
-        bindState(self.BindNodes[`${key}`].nodes[node], state[`${key}`]);
+
+      console.log("The type of nodes", self.BindNodes[`${key}`]);
+      if (self.BindNodes[`${key}`] != undefined) {
+        for (var node in self.BindNodes[`${key}`].nodes) {
+          bindState(self.BindNodes[`${key}`].nodes[node], state[`${key}`]);
+        }
       }
     }
   }
