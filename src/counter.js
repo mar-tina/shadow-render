@@ -4,13 +4,15 @@ let state = {
   counter: 0
 };
 
-let Counter = Shadow("counter-el", {
-  onMount: () => {
+let Counter = new Shadow("counter-el", {
+  onMount: self => {
     console.log("Mounted counter-app");
   },
+
   getInitialState: self => {
     return useState({ counter: 0 }, self);
   },
+
   methods: {
     increment: (e, self) => {
       self.state.counter++;
@@ -21,6 +23,7 @@ let Counter = Shadow("counter-el", {
       self.setState({ counter: self.state.counter }, false);
     }
   },
+
   template: self => /*html*/ `
         <div @bind="counter"> ${self.state.counter} </div>
         <button @click="increment">  +  </button>
