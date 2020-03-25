@@ -1,5 +1,7 @@
 # SHADOW RENDER
 
+An experimental project . For learning purposes only.
+
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
 Whats new in this version ?
