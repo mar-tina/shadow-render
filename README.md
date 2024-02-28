@@ -225,5 +225,3 @@ runs in the context provider
 - [:white_check_mark:] Handling re-rendering of the component.
 
 - [:white_check_mark:] Passing data across components
-
-- [:white_check_mark:] Example App
